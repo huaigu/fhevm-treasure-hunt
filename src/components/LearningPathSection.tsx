@@ -1,5 +1,6 @@
 import { Terminal, FileCode, Monitor, CheckCircle, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const LearningPathSection = () => {
   const steps = [
@@ -75,10 +76,20 @@ const LearningPathSection = () => {
                     <span className="text-sm text-muted-foreground">
                       ⏱️ {step.duration}
                     </span>
-                    <div className="flex items-center space-x-1 text-primary">
-                      <span className="text-sm font-medium">开始学习</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
+                    {index === 0 ? (
+                      <Link 
+                        to="/environment-setup" 
+                        className="flex items-center space-x-1 text-primary hover:text-primary/80 transition-colors"
+                      >
+                        <span className="text-sm font-medium">开始学习</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    ) : (
+                      <div className="flex items-center space-x-1 text-primary">
+                        <span className="text-sm font-medium">开始学习</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
