@@ -1,527 +1,515 @@
-import React, { useState } from "react";
-import { ChevronRight, Code2, FileCode, Wrench, Upload, CheckCircle, Keyboard, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from 'react';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, ArrowRight, Lock, Unlock, Shield, Code, Database, Globe, Keyboard, CheckCircle, AlertCircle, Lightbulb } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ContractDevelopment = () => {
-  const [activeSection, setActiveSection] = useState("concepts");
-
-  const sections = [
-    { id: "concepts", title: "A. FHEVM 核心概念", icon: Code2 },
-    { id: "design", title: "B. 设计寻宝游戏", icon: FileCode },
-    { id: "coding", title: "C. 编写合约代码", icon: Wrench },
-    { id: "deploy", title: "D. 部署到测试网", icon: Upload }
-  ];
-
-  const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 h-16 bg-background/80 backdrop-blur-md border-b border-border z-50">
-        <div className="container mx-auto px-4 h-full flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                <span className="text-primary font-bold">FHE</span>
+      <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <div className="mr-4 hidden md:flex">
+            <Link to="/" className="mr-6 flex items-center space-x-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground">
+                <Code className="h-4 w-4" />
               </div>
-              <span className="font-semibold">机密寻宝之旅</span>
+              <span className="hidden font-bold sm:inline-block">机密寻宝之旅</span>
             </Link>
           </div>
-          <div className="flex items-center space-x-6">
-            <Link to="/" className="text-secondary-foreground hover:text-foreground transition-colors">
-              首页
+          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+            <nav className="flex items-center space-x-6 text-sm font-medium">
+              <Link to="/" className="transition-colors hover:text-foreground/80 text-foreground/60">教程</Link>
+              <Link to="/" className="transition-colors hover:text-foreground/80 text-foreground/60">在线演示</Link>
+              <a href="https://github.com" className="transition-colors hover:text-foreground/80 text-foreground/60">GitHub</a>
+            </nav>
+            <Link to="/">
+              <Button size="sm">开始学习</Button>
             </Link>
-            <Link to="/environment-setup" className="text-secondary-foreground hover:text-foreground transition-colors">
-              环境准备
-            </Link>
-            <span className="text-primary font-medium">合约开发</span>
           </div>
         </div>
       </nav>
 
-      <div className="pt-16 flex">
-        {/* Side Navigation */}
-        <aside className="fixed left-0 top-16 w-80 h-screen bg-card/50 backdrop-blur-sm border-r border-border overflow-y-auto">
-          <div className="p-6">
-            <h3 className="font-semibold mb-4">本页导航</h3>
-            <nav className="space-y-2">
-              {sections.map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => scrollToSection(section.id)}
-                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                    activeSection === section.id
-                      ? "bg-primary/20 text-primary"
-                      : "text-secondary-foreground hover:text-foreground hover:bg-accent"
-                  }`}
-                >
-                  <section.icon className="w-4 h-4" />
-                  <span className="text-sm">{section.title}</span>
-                </button>
-              ))}
-            </nav>
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            第二部分：编写你的第一个机密智能合约
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            欢迎来到寻宝之旅最核心的部分！在本章中，我们将深入智能合约的世界，真正揭开FHEVM的神秘面纱。你将学会如何在加密数据上进行计算，设计一个完善的链上游戏逻辑，并最终将你的第一个机密DApp部署到公共测试网上。
+          </p>
+          <div className="mt-6 p-6 rounded-lg bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+            <p className="text-lg font-medium">准备好了吗？让我们开始编码吧！</p>
           </div>
-        </aside>
+        </div>
 
-        {/* Main Content */}
-        <main className="ml-80 flex-1 px-8 py-12">
-          <div className="max-w-4xl mx-auto space-y-16">
-            {/* Header */}
-            <header className="text-center">
-              <h1 className="text-4xl font-bold mb-4">
-                第二部分：编写你的第一个<span className="gradient-text">机密智能合约</span>
-              </h1>
-              <p className="text-lg text-secondary-foreground max-w-3xl mx-auto">
-                现在，激动人心的时刻到了！我们将深入 packages/contracts 目录，通过分析一个简单的计数器合约，揭开 FHEVM 的神秘面纱，学习如何在加密数据上进行计算。
-              </p>
-            </header>
-
-            {/* Section A: FHEVM Core Concepts */}
-            <section id="concepts" className="space-y-8">
-              <h2 className="text-3xl font-bold flex items-center space-x-3">
-                <Code2 className="w-8 h-8 text-primary" />
-                <span>FHEVM 核心概念：解构 Counter 合约</span>
-              </h2>
-
-              {/* Concept 1: Encrypted Data Types */}
-              <Card className="feature-card">
-                <CardHeader>
-                  <CardTitle className="text-xl">初识 euint32：会加密的数字</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-secondary-foreground leading-relaxed">
-                    在 Solidity 中，我们用 <code className="bg-accent px-2 py-1 rounded text-sm">uint256</code> 来表示一个公开的整数。在 FHEVM 中，我们使用<strong>加密整数</strong>，例如 <code className="bg-primary/20 text-primary px-2 py-1 rounded text-sm">euint32</code> (encrypted uint32)。
-                  </p>
-                  <p className="text-secondary-foreground leading-relaxed">
-                    把它想象成一个<strong>上锁的保险箱</strong>，里面装着一个数字。你无法直接打开它看到里面的数字，但 FHEVM 提供了一套"特种工具"，可以直接对这个锁着的状态进行操作。
-                  </p>
-                  
-                  <div className="bg-accent/50 p-4 rounded-lg">
-                    <pre className="text-sm">
-                      <code className="language-solidity">
-{`// FHEVM 合约中的加密状态变量
-euint32 private _count; // 🔒 这是一个加密的整数`}
-                      </code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Concept 2: Encrypted Computation */}
-              <Card className="feature-card">
-                <CardHeader>
-                  <CardTitle className="text-xl">魔法时刻：FHE.add()</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-secondary-foreground leading-relaxed">
-                    这是 FHEVM 最神奇的地方。我们无需解密，就可以直接对两个"加密保险箱"进行运算。
-                  </p>
-                  
-                  {/* Code Comparison */}
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <Card className="border-destructive/50">
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-base text-destructive">传统 Solidity</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <pre className="text-sm">
-                          <code>
-{`// publicCount 是 uint32
-publicCount = publicCount + 1;`}
-                          </code>
-                        </pre>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="border-primary/50">
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-base text-primary">FHEVM Solidity</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <pre className="text-sm">
-                          <code>
-{`// _count 是 euint32
-_count = FHE.add(_count, 
-  FHE.asEuint32(1));`}
-                          </code>
-                        </pre>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  
-                  {/* Visual Diagram */}
-                  <div className="bg-gradient-subtle p-6 rounded-lg text-center">
-                    <div className="flex items-center justify-center space-x-4 text-lg">
-                      <div className="flex items-center space-x-2 bg-primary/20 px-4 py-2 rounded-lg">
-                        <span>🔒</span>
-                        <span>盒子A</span>
-                      </div>
-                      <span className="text-2xl">+</span>
-                      <div className="flex items-center space-x-2 bg-primary/20 px-4 py-2 rounded-lg">
-                        <span>🔒</span>
-                        <span>盒子B</span>
-                      </div>
-                      <span className="text-2xl">→</span>
-                      <div className="flex items-center space-x-2 bg-primary/30 px-4 py-2 rounded-lg">
-                        <span>🔒</span>
-                        <span>盒子C (A+B)</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Concept 3: Data Permissions */}
-              <Card className="feature-card">
-                <CardHeader>
-                  <CardTitle className="text-xl">与外界交互：FHE.fromExternal() 和 FHE.allow()</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-secondary-foreground leading-relaxed">
-                    合约如何处理来自前端的加密数据，又如何授权前端解密结果呢？
-                  </p>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-primary">FHE.fromExternal()</h4>
-                      <p className="text-sm text-secondary-foreground">
-                        像一个"收件员"，它接收用户从前端发来的加密包裹，并转换成合约内部可以处理的格式。
-                      </p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-primary">FHE.allow()</h4>
-                      <p className="text-sm text-secondary-foreground">
-                        像一个"授权官"，它给某个加密数据贴上一张"许可标签"，允许特定的人在前端解密它。
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-accent/50 p-4 rounded-lg">
-                    <pre className="text-sm">
-                      <code>
-{`function increment(bytes calldata encryptedAmount) public {
-    euint32 amount = FHE.fromExternal(encryptedAmount); // 📨 接收加密数据
-    _count = FHE.add(_count, amount);
-    FHE.allow(_count, msg.sender); // 🎫 授权解密
-}`}
-                      </code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Hands-on Tip */}
-              <Card className="bg-primary/10 border-primary/30">
-                <CardContent className="pt-6">
-                  <div className="flex items-start space-x-3">
-                    <Keyboard className="w-6 h-6 text-primary mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-primary mb-2">动手实践</h4>
-                      <p className="text-secondary-foreground">
-                        现在，请打开 <code className="bg-background px-2 py-1 rounded text-sm">packages/contracts/contracts/Counter.sol</code> 文件，我们来一起阅读它，加深对这些概念的理解！
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Section B: Game Design */}
-            <section id="design" className="space-y-8">
-              <h2 className="text-3xl font-bold flex items-center space-x-3">
-                <FileCode className="w-8 h-8 text-primary" />
-                <span>理论结合实践：设计"机密寻宝游戏"</span>
-              </h2>
-
-              <Card className="feature-card">
-                <CardContent className="pt-6">
-                  <p className="text-secondary-foreground mb-6 leading-relaxed">
-                    好了，基础知识已经足够！现在我们来设计自己的游戏。一个好的设计过程，远比直接写代码更重要。
-                  </p>
-
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-primary mt-1" />
-                      <div>
-                        <h4 className="font-semibold mb-1">游戏目标</h4>
-                        <p className="text-secondary-foreground text-sm">
-                          玩家不断猜测一个秘密坐标 (x, y)，合约会返回一个提示（猜的坐标离宝藏有多远），直到距离为0，游戏成功。
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-primary mt-1" />
-                      <div>
-                        <h4 className="font-semibold mb-1">隐私要求</h4>
-                        <p className="text-secondary-foreground text-sm">
-                          玩家的猜测、宝藏的秘密位置，以及合约返回的距离提示，全程都必须是加密的。
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-primary mt-1" />
-                      <div>
-                        <h4 className="font-semibold mb-1">合约需要记住什么 (State)</h4>
-                        <p className="text-secondary-foreground text-sm">
-                          宝藏的加密坐标 secretX 和 secretY。
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-3">
-                      <CheckCircle className="w-5 h-5 text-primary mt-1" />
-                      <div>
-                        <h4 className="font-semibold mb-1">合约需要做什么 (Logic)</h4>
-                        <div className="text-secondary-foreground text-sm space-y-1">
-                          <p>• 接收玩家加密的猜测坐标 guessX, guessY</p>
-                          <p>• 在加密状态下，计算猜测点和秘密点之间的曼哈顿距离</p>
-                          <p>• 公式：距离 = |x1 - x2| + |y1 - y2|</p>
-                          <p>• 将加密的"距离"结果返回给玩家</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Section C: Coding */}
-            <section id="coding" className="space-y-8">
-              <h2 className="text-3xl font-bold flex items-center space-x-3">
-                <Wrench className="w-8 h-8 text-primary" />
-                <span>动手编码：从零到一构建寻宝合约</span>
-              </h2>
-
-              <Card className="bg-primary/10 border-primary/30">
-                <CardContent className="pt-6">
-                  <div className="flex items-start space-x-3">
-                    <Keyboard className="w-6 h-6 text-primary mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-primary mb-2">动手实践</h4>
-                      <p className="text-secondary-foreground">
-                        在 <code className="bg-background px-2 py-1 rounded text-sm">packages/contracts/contracts/</code> 目录下，新建一个 <code className="bg-background px-2 py-1 rounded text-sm">TreasureHunt.sol</code> 文件，并删除 Counter.sol。让我们一步步把它构建起来！
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Step 1: Contract Structure */}
-              <Card className="feature-card">
-                <CardHeader>
-                  <CardTitle className="text-xl">1. 定义状态和构造函数</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-secondary-foreground">
-                    首先，我们定义合约的基础框架。使用 <code className="bg-accent px-2 py-1 rounded text-sm">euint8</code> 类型来存储坐标，因为我们的地图范围是 0-255，这个范围足够了。
-                  </p>
-                  
-                  <div className="bg-accent/50 p-4 rounded-lg">
-                    <pre className="text-sm overflow-x-auto">
-                      <code>
-{`// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
-
-import "fhevm/lib/TFHE.sol";
-
-contract TreasureHunt {
-    // 宝藏的秘密位置（加密存储）
-    euint8 private secretX;
-    euint8 private secretY;
-    
-    constructor(bytes calldata _secretX, bytes calldata _secretY) {
-        // 从加密输入初始化宝藏位置
-        secretX = TFHE.asEuint8(_secretX);
-        secretY = TFHE.asEuint8(_secretY);
-    }
-}`}
-                      </code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Step 2: Core Function */}
-              <Card className="feature-card">
-                <CardHeader>
-                  <CardTitle className="text-xl">2. 编写核心 guess 函数</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-secondary-foreground">
-                    这是合约最核心的部分。我们将分步讲解：
-                  </p>
-                  
-                  <div className="space-y-3 text-sm text-secondary-foreground">
-                    <p>• 首先，计算X轴的距离 distX，即 |guessX - secretX|</p>
-                    <p>• 在FHEVM中，绝对值可以通过 <code className="bg-accent px-1 rounded">TFHE.max(a-b, b-a)</code> 来巧妙实现</p>
-                    <p>• 然后，用同样的方法计算 distY</p>
-                    <p>• 最后，用 <code className="bg-accent px-1 rounded">TFHE.add(distX, distY)</code> 将它们相加，得到最终的曼哈顿距离</p>
-                    <p>• 别忘了用 <code className="bg-accent px-1 rounded">TFHE.allow()</code> 授权玩家解密结果！</p>
-                  </div>
-                  
-                  <div className="bg-accent/50 p-4 rounded-lg">
-                    <pre className="text-sm overflow-x-auto">
-                      <code>
-{`function guess(bytes calldata _guessX, bytes calldata _guessY) 
-    public returns (bytes32) {
-    // 将前端发来的加密猜测转换为合约内部格式
-    euint8 guessX = TFHE.asEuint8(_guessX);
-    euint8 guessY = TFHE.asEuint8(_guessY);
-    
-    // 计算 X 轴距离：|guessX - secretX|
-    euint8 diffX1 = TFHE.sub(guessX, secretX);
-    euint8 diffX2 = TFHE.sub(secretX, guessX);
-    euint8 distX = TFHE.max(diffX1, diffX2);
-    
-    // 计算 Y 轴距离：|guessY - secretY|
-    euint8 diffY1 = TFHE.sub(guessY, secretY);
-    euint8 diffY2 = TFHE.sub(secretY, guessY);
-    euint8 distY = TFHE.max(diffY1, diffY2);
-    
-    // 计算曼哈顿距离：distX + distY
-    euint8 totalDistance = TFHE.add(distX, distY);
-    
-    // 授权调用者解密结果
-    TFHE.allow(totalDistance, msg.sender);
-    
-    return TFHE.encrypt(totalDistance);
-}`}
-                      </code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Step 3: Victory Function */}
-              <Card className="feature-card">
-                <CardHeader>
-                  <CardTitle className="text-xl">3. (可选) 增加一个"胜利条件"函数</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-secondary-foreground">
-                    我们可以增加一个辅助函数 <code className="bg-accent px-2 py-1 rounded text-sm">isFound(distance)</code>，它接收一个加密的距离，并返回一个加密的布尔值 (ebool)，告诉我们距离是否为0。这能让前端逻辑更清晰。
-                  </p>
-                  
-                  <div className="bg-accent/50 p-4 rounded-lg">
-                    <pre className="text-sm overflow-x-auto">
-                      <code>
-{`function isFound(bytes calldata _distance) public view returns (ebool) {
-    euint8 distance = TFHE.asEuint8(_distance);
-    euint8 zero = TFHE.asEuint8(0);
-    
-    // 检查距离是否等于 0
-    ebool found = TFHE.eq(distance, zero);
-    
-    // 授权调用者解密结果
-    TFHE.allow(found, msg.sender);
-    
-    return found;
-}`}
-                      </code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Section D: Deployment */}
-            <section id="deploy" className="space-y-8">
-              <h2 className="text-3xl font-bold flex items-center space-x-3">
-                <Upload className="w-8 h-8 text-primary" />
-                <span>发布到世界：部署你的合约到 Sepolia 测试网</span>
-              </h2>
-
-              <Card className="feature-card">
-                <CardContent className="pt-6">
-                  <p className="text-secondary-foreground mb-6 leading-relaxed">
-                    本地测试很棒，但真正的乐趣在于将你的DApp发布到公共测试网上，让任何人都能与它互动！
-                  </p>
-
-                  <div className="space-y-6">
-                    {/* Step 1: Get Test Tokens */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">1. 获取 Sepolia 测试币</h4>
-                      <p className="text-secondary-foreground text-sm">
-                        访问 Sepolia Faucet 获取免费的测试币，这些是支付网络费用的"燃料"。
-                      </p>
-                      <Button variant="outline" className="w-fit">
-                        <a href="https://sepoliafaucet.com/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2">
-                          <span>获取测试币</span>
-                          <ChevronRight className="w-4 h-4" />
-                        </a>
-                      </Button>
-                    </div>
-
-                    {/* Step 2: Configure Environment */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">2. 配置环境变量</h4>
-                      <p className="text-secondary-foreground text-sm">
-                        在项目根目录创建 <code className="bg-accent px-2 py-1 rounded">.env</code> 文件：
-                      </p>
-                      <div className="bg-accent/50 p-4 rounded-lg">
-                        <pre className="text-sm">
-                          <code>
-{`SEPOLIA_RPC_URL="https://sepolia.infura.io/v3/YOUR_PROJECT_ID"
-PRIVATE_KEY="your_wallet_private_key_here"
-ETHERSCAN_API_KEY="your_etherscan_api_key"`}
-                          </code>
-                        </pre>
-                      </div>
-                    </div>
-
-                    {/* Step 3: Deploy */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">3. 执行部署命令</h4>
-                      <div className="bg-accent/50 p-4 rounded-lg">
-                        <pre className="text-sm">
-                          <code>yarn contracts:deploy --network sepolia</code>
-                        </pre>
-                      </div>
-                    </div>
-
-                    {/* Step 4: Verify */}
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-lg">4. 验证部署结果</h4>
-                      <p className="text-secondary-foreground text-sm">
-                        部署成功后，复制合约地址到 Sepolia Etherscan 查看你的合约！
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Completion Section */}
-            <Card className="bg-gradient-primary text-white">
-              <CardContent className="pt-6 text-center">
-                <CheckCircle className="w-16 h-16 mx-auto mb-4 opacity-90" />
-                <h3 className="text-2xl font-bold mb-4">太棒了！你的机密合约已上线！</h3>
-                <p className="mb-6 opacity-90">
-                  你已经掌握了FHEVM合约的核心知识，并成功将亲手编写的DApp部署到了公共网络上。
-                </p>
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="bg-white text-primary hover:bg-white/90"
-                >
-                  前往第三部分：构建前端交互
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+        {/* Section A: FHEVM Core Concepts */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-primary">A. FHEVM 核心概念：解构 Counter 合约</h2>
+          
+          <div className="mb-8">
+            <p className="text-lg mb-6 text-muted-foreground">
+              在构建我们复杂的游戏之前，让我们先通过官方模板中自带的 Counter.sol 合约，来学习几个FHEVM最基础、也最重要的概念。
+            </p>
+            
+            <Card className="bg-accent/20 border-accent">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <Keyboard className="h-5 w-5 text-accent" />
+                  <span className="font-semibold text-accent">动手实践</span>
+                </div>
+                <p>请在你的代码编辑器中，打开 <code className="bg-muted px-2 py-1 rounded text-sm">packages/contracts/contracts/</code> 目录下的 <code className="bg-muted px-2 py-1 rounded text-sm">Counter.sol</code> 文件。</p>
               </CardContent>
             </Card>
           </div>
-        </main>
+
+          {/* Subsection 1: euint32 */}
+          <div className="mb-10">
+            <h3 className="text-2xl font-semibold mb-6">1. FHEVM 的"加密数据类型"：euint32</h3>
+            <p className="text-muted-foreground mb-6">
+              在传统的Solidity中，我们用 <code className="bg-muted px-2 py-1 rounded text-sm">uint</code> 来表示一个公开的整数。在FHEVM中，我们使用<strong>加密整数</strong>，例如 <code className="bg-muted px-2 py-1 rounded text-sm">euint32</code> (encrypted uint32)。
+            </p>
+            <p className="text-muted-foreground mb-6">
+              你可以把它想象成一个<strong>上锁的保险箱</strong> 💎，里面装着一个数字。你无法直接打开它看到里面的数字，但FHEVM提供了一套"特种工具"，可以直接对这个锁着的状态进行操作。
+            </p>
+            
+            <Card className="bg-card border">
+              <CardContent className="pt-6">
+                <p className="mb-4 text-sm text-muted-foreground">在 Counter.sol 中，你会看到：</p>
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+                  <code className="text-sm">
+{`// 一个私有的、加密的32位无符号整数
+euint32 private _count;`}
+                  </code>
+                </pre>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Subsection 2: FHE.add() */}
+          <div className="mb-10">
+            <h3 className="text-2xl font-semibold mb-6">2. FHEVM 的"加密计算"：FHE.add()</h3>
+            <p className="text-muted-foreground mb-6">
+              这是FHEVM最神奇的地方。我们无需解密，就可以直接对两个"加密保险箱"进行运算。
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <Card className="border-red-200 bg-red-50/50 dark:bg-red-950/20 dark:border-red-800">
+                <CardHeader>
+                  <CardTitle className="text-lg text-red-800 dark:text-red-200">传统 Solidity (publicCount 是 uint32)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <pre className="bg-red-100/50 dark:bg-red-900/20 p-3 rounded text-sm">
+                    <code>publicCount = publicCount + 1;</code>
+                  </pre>
+                </CardContent>
+              </Card>
+              
+              <Card className="border-green-200 bg-green-50/50 dark:bg-green-950/20 dark:border-green-800">
+                <CardHeader>
+                  <CardTitle className="text-lg text-green-800 dark:text-green-200">FHEVM Solidity (_count 是 euint32)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <pre className="bg-green-100/50 dark:bg-green-900/20 p-3 rounded text-sm">
+                    <code>_count = FHE.add(_count, FHE.asEuint32(1));</code>
+                  </pre>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="bg-accent/10 border-accent/20">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-4 text-lg">
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-6 w-6 text-primary" />
+                      <span>盒子A</span>
+                    </div>
+                    <span className="text-2xl">+</span>
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-6 w-6 text-primary" />
+                      <span>盒子B</span>
+                    </div>
+                    <span className="text-2xl">→</span>
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-6 w-6 text-accent" />
+                      <span>新盒子C（A+B的和）</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Subsection 3: FHE functions */}
+          <div className="mb-10">
+            <h3 className="text-2xl font-semibold mb-6">3. FHEVM 的"出入许可"：FHE.fromExternal() 和 FHE.allow()</h3>
+            <p className="text-muted-foreground mb-6">
+              合约如何处理来自前端的加密数据，又如何授权前端解密结果呢？
+            </p>
+            
+            <div className="space-y-4 mb-6">
+              <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-800">
+                <CardContent className="pt-4">
+                  <div className="flex items-start gap-3">
+                    <Database className="h-5 w-5 text-blue-600 mt-1" />
+                    <div>
+                      <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2">FHE.fromExternal():</p>
+                      <p className="text-sm text-blue-700 dark:text-blue-300">像一个"收件员"，它接收用户从前端发来的加密包裹，并转换成合约内部可以处理的格式。</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="border-purple-200 bg-purple-50/50 dark:bg-purple-950/20 dark:border-purple-800">
+                <CardContent className="pt-4">
+                  <div className="flex items-start gap-3">
+                    <Shield className="h-5 w-5 text-purple-600 mt-1" />
+                    <div>
+                      <p className="font-semibold text-purple-800 dark:text-purple-200 mb-2">FHE.allow():</p>
+                      <p className="text-sm text-purple-700 dark:text-purple-300">像一个"授权官"，它给某个加密数据（例如 _count）贴上一张"许可标签"，允许特定的人（例如 msg.sender）在前端申请解密它。</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Section B: Game Design */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-primary">B. 设计升级：打造一个更真实的寻宝游戏</h2>
+          
+          <p className="text-lg mb-6 text-muted-foreground">
+            好了，基础知识已经足够！现在，我们要抛开简单的计数器，来设计我们自己的、功能更完善的"机密寻宝游戏"。一个好的设计过程，远比直接写代码更重要。
+          </p>
+          
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-500" />
+                我们的游戏需要满足以下要求：
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-1" />
+                <div>
+                  <p className="font-semibold mb-1">游戏管理员 (Owner):</p>
+                  <p className="text-sm text-muted-foreground">只有合约的部署者（owner）有权创建新宝藏。我们将使用行业标准的OpenZeppelin Ownable合约来实现权限控制。</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-1" />
+                <div>
+                  <p className="font-semibold mb-1">随机宝藏:</p>
+                  <p className="text-sm text-muted-foreground">宝藏的位置 (secretX, secretY) 将由owner调用一个函数，利用Zama提供的链上随机数 FHE.rand() 来生成，保证游戏的公平性和可重玩性。</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-1" />
+                <div>
+                  <p className="font-semibold mb-1">私密猜测:</p>
+                  <p className="text-sm text-muted-foreground">任何人都可以参与猜测。合约会计算并保存玩家猜测位置与宝藏的加密距离。</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle className="h-5 w-5 text-green-500 mt-1" />
+                <div>
+                  <p className="font-semibold mb-1">玩家主导的解密:</p>
+                  <p className="text-sm text-muted-foreground">玩家将通过一个名为 Relayer 的服务，在<strong>链下（off-chain）</strong>安全地解密自己的距离，而不会在链上暴露任何信息。</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Section C: Coding */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-primary">C. 动手编码：编写"寻宝游戏V2"合约</h2>
+          
+          <p className="text-lg mb-6 text-muted-foreground">现在，让我们把设计变成代码！</p>
+          
+          <Card className="bg-accent/20 border-accent mb-8">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Keyboard className="h-5 w-5 text-accent" />
+                <span className="font-semibold text-accent">动手实践</span>
+              </div>
+              <div className="space-y-2 text-sm">
+                <p>在 <code className="bg-muted px-2 py-1 rounded">packages/contracts/contracts/</code> 目录下，新建一个 <code className="bg-muted px-2 py-1 rounded">TreasureHunt.sol</code> 文件。</p>
+                <p>删除 <code className="bg-muted px-2 py-1 rounded">Counter.sol</code> 文件，我们不再需要它了。</p>
+                <p>将下面的代码分步粘贴到你的 <code className="bg-muted px-2 py-1 rounded">TreasureHunt.sol</code> 文件中。</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Code Step 1 */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4">1. 引入依赖并定义状态变量</h3>
+            <p className="text-muted-foreground mb-4">
+              我们需要引入 FHE 库和 Ownable 合约。同时，定义好宝藏坐标、状态标记，以及一个映射来存储每个玩家的猜测距离。
+            </p>
+            
+            <Card>
+              <CardContent className="pt-6">
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                  <code>{`// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import {FHE, euint8} from "@fhevm/solidity/lib/FHE.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol"; // 引入Ownable
+
+contract TreasureHunt is Ownable { // 继承Ownable
+    euint8 private secretX;
+    euint8 private secretY;
+    bool private isTreasureSet; // 标记宝藏是否已创建
+
+    // 一个映射，用于存储每个玩家最新的加密距离
+    // 声明为 public，这样Solidity会自动为我们创建一个getter函数
+    mapping(address => euint8) public userDistances;
+
+    // 构造函数现在需要调用Ownable的构造函数，将部署者设为owner
+    constructor() Ownable(msg.sender) {}
+}`}</code>
+                </pre>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Code Step 2 */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4">2. 用链上随机数创建宝藏</h3>
+            <p className="text-muted-foreground mb-4">
+              接下来，编写一个只能由owner调用的函数，使用FHE.randEuint8()来生成秘密坐标。
+            </p>
+            
+            <Card>
+              <CardContent className="pt-6">
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                  <code>{`    function createTreasure() external onlyOwner {
+        require(!isTreasureSet, "Treasure is already set!");
+        
+        // 使用链上变量安全地生成随机数种子
+        uint256 randSeed = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender)));
+        
+        // 使用种子生成加密的随机数作为坐标
+        secretX = FHE.randEuint8(randSeed);
+        secretY = FHE.randEuint8(randSeed + 1); // 第二个随机数使用不同的种子以增加随机性
+        
+        isTreasureSet = true;
+    }`}</code>
+                </pre>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Code Step 3 */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4">3. 编写核心的 guess 函数</h3>
+            <p className="text-muted-foreground mb-4">
+              这是游戏的灵魂。它接收玩家的加密猜测，计算曼哈顿距离 (|x1-x2| + |y1-y2|)，授予解密许可，并存储结果。
+            </p>
+            
+            <Card className="bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800 mb-4">
+              <CardContent className="pt-4">
+                <div className="flex items-start gap-3">
+                  <Lightbulb className="h-5 w-5 text-blue-600 mt-1" />
+                  <div>
+                    <p className="font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 提示：</p>
+                    <p className="text-sm text-blue-700 dark:text-blue-300">在FHEVM中，计算加密数字的绝对值 |a-b| 有一个技巧，就是计算 max(a-b, b-a)。</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="pt-6">
+                <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                  <code>{`    function guess(bytes calldata encryptedX, bytes calldata encryptedY) external {
+        require(isTreasureSet, "Treasure has not been set yet!");
+        
+        euint8 guessX = FHE.asEuint8(encryptedX);
+        euint8 guessY = FHE.asEuint8(encryptedY);
+
+        // 使用 FHE.max 和 FHE.sub 计算X轴和Y轴的绝对差值
+        euint8 distX = FHE.max(FHE.sub(guessX, secretX), FHE.sub(secretX, guessX));
+        euint8 distY = FHE.max(FHE.sub(guessY, secretY), FHE.sub(secretY, guessY));
+        
+        // 使用 FHE.add 计算曼哈顿距离
+        euint8 distance = FHE.add(distX, distY);
+
+        // 关键一步：在链上授予 msg.sender 解密这个 \`distance\` 值的权限
+        // 没有这一行，Relayer 将拒绝用户的链下解密请求
+        FHE.allow(distance, msg.sender);
+
+        // 将带有解密许可的加密距离存储在映射中
+        userDistances[msg.sender] = distance;
+    }`}</code>
+                </pre>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Code Step 4 */}
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold mb-4">4. 为前端留下线索</h3>
+            <p className="text-muted-foreground mb-4">
+              合约已经完成了！但前端如何读取 userDistances 里的加密数据呢？很简单，因为我们把它声明为了 public，Solidity会自动为我们创建一个 userDistances(address) 的getter函数。
+            </p>
+            <p className="text-muted-foreground">
+              在下一章，我们前端的第一步就是调用这个函数来取回加密的距离，然后将它交给Relayer进行解密！
+            </p>
+          </div>
+        </section>
+
+        {/* Section D: Deployment */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-primary">D. 部署与验证：将合约发布到世界</h2>
+          
+          <p className="text-lg mb-8 text-muted-foreground">
+            本地测试很棒，但真正的乐趣在于将你的DApp发布到公共测试网上。
+          </p>
+
+          <div className="space-y-8">
+            {/* Step 1: Get testnet tokens */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">1. 获取 Sepolia 测试币</h3>
+              <p className="text-muted-foreground mb-4">
+                你需要一些Sepolia ETH来支付部署合约的"燃料费"(Gas Fee)。你可以从公共的Faucet（水龙头）获取，例如 <a href="https://sepoliafaucet.com" className="text-primary hover:underline">sepoliafaucet.com</a>。
+              </p>
+            </div>
+
+            {/* Step 2: Environment variables */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">2. 配置环境变量</h3>
+              <p className="text-muted-foreground mb-4">
+                在你的项目根目录下，创建一个名为 <code className="bg-muted px-2 py-1 rounded text-sm">.env</code> 的文件。这个文件用来存放敏感信息，比如你的私钥和RPC URL。
+              </p>
+              
+              <Card>
+                <CardContent className="pt-6">
+                  <p className="mb-4 text-sm text-muted-foreground">将以下内容复制到 .env 文件中，并替换成你自己的信息：</p>
+                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                    <code>{`# 从Alchemy或Infura等服务获取
+SEPOLIA_RPC_URL="https://eth-sepolia.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY"
+# 从Metamask导出的钱包私钥（请务必使用测试钱包！）
+PRIVATE_KEY="YOUR_WALLET_PRIVATE_KEY"`}</code>
+                  </pre>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Step 3: Modify deploy script */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">3. 修改部署脚本</h3>
+              <p className="text-muted-foreground mb-4">
+                打开 <code className="bg-muted px-2 py-1 rounded text-sm">packages/contracts/scripts/deploy.ts</code> 文件，我们需要修改它，让它部署我们新的 TreasureHunt 合约，而不是旧的 Counter。
+              </p>
+              
+              <Card className="mb-4">
+                <CardContent className="pt-6">
+                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                    <code>{`// 将
+// import { deployCounter } from "../lib/counter/deploy";
+// deployCounter();
+
+// 修改为
+import { deployTreasureHunt } from "../lib/treasure-hunt/deploy";
+deployTreasureHunt();`}</code>
+                  </pre>
+                </CardContent>
+              </Card>
+
+              <p className="text-muted-foreground mb-4">
+                然后，在 <code className="bg-muted px-2 py-1 rounded text-sm">packages/contracts/lib</code> 目录下，新建一个 <code className="bg-muted px-2 py-1 rounded text-sm">treasure-hunt</code> 文件夹，并在其中创建一个 <code className="bg-muted px-2 py-1 rounded text-sm">deploy.ts</code> 文件，内容如下：
+              </p>
+              
+              <Card>
+                <CardContent className="pt-6">
+                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                    <code>{`import { ethers } from "hardhat";
+
+export const deployTreasureHunt = async () => {
+  const contractFactory = await ethers.getContractFactory("TreasureHunt");
+  // 部署时调用构造函数
+  const contract = await contractFactory.deploy();
+  await contract.waitForDeployment();
+  console.log("TreasureHunt deployed to:", contract.target);
+};`}</code>
+                  </pre>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Step 4: Deploy */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">4. 执行部署命令</h3>
+              <p className="text-muted-foreground mb-4">一切就绪！在项目根目录的终端中，运行以下命令：</p>
+              
+              <Card>
+                <CardContent className="pt-6">
+                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                    <code>yarn contracts:deploy --network sepolia</code>
+                  </pre>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Step 5: Verify */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4">5. 验证部署结果</h3>
+              <p className="text-muted-foreground mb-4">如果一切顺利，你的终端会打印出类似下面的信息：</p>
+              
+              <Card className="bg-green-50/50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+                <CardContent className="pt-6">
+                  <pre className="bg-green-100/50 dark:bg-green-900/20 p-4 rounded-lg text-sm">
+                    <code>TreasureHunt deployed to: 0x1234567890AbCdEf1234567890AbCdEf12345678</code>
+                  </pre>
+                </CardContent>
+              </Card>
+              
+              <p className="text-muted-foreground mt-4">
+                恭喜！你的第一个机密智能合约已经成功部署到Sepolia测试网络！你可以复制这个地址，到 Sepolia Etherscan 上去查看它。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Completion Section */}
+        <section className="text-center">
+          <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20">
+            <CardContent className="pt-8 pb-8">
+              <h3 className="text-2xl font-bold mb-4 text-primary">太棒了！你的机密合约已上线！</h3>
+              <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
+                你已经掌握了FHEVM合约的核心知识，并成功将亲手编写的DApp部署到了公共网络上。
+              </p>
+              <Button size="lg" className="gap-2">
+                前往第三部分：构建前端交互
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Navigation */}
+        <div className="flex justify-between items-center mt-12 pt-8 border-t border-border">
+          <Link to="/environment-setup">
+            <Button variant="outline" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              上一步：环境准备
+            </Button>
+          </Link>
+          <Button className="gap-2">
+            下一步：构建前端
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
