@@ -84,6 +84,14 @@ const LearningPathSection = () => {
                         <span className="text-sm font-medium">开始学习</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>
+                    ) : index === 1 ? (
+                      <Link 
+                        to="/contract-development" 
+                        className="flex items-center space-x-1 text-primary hover:text-primary/80 transition-colors"
+                      >
+                        <span className="text-sm font-medium">开始学习</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
                     ) : (
                       <div className="flex items-center space-x-1 text-primary">
                         <span className="text-sm font-medium">开始学习</span>
