@@ -2,41 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* FHEVM Treasure Hunt Design System - Inspired by Zama AI
+All colors MUST be HSL. Dark theme with purple/magenta accents.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Zama-inspired dark theme palette */
+    --background: 0 0% 4%;           /* #0A0A0A - Dark Background */
+    --foreground: 0 0% 100%;         /* #FFFFFF - White Text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 6%;                 /* Slightly lighter for cards */
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 261 92% 65%;          /* #8B5CF6 - Purple Accent */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 12%;           /* Dark gray for secondary elements */
+    --secondary-foreground: 0 0% 80%; /* #CCCCCC - Light Gray */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 40%;    /* #666666 - Medium Gray */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 330 83% 58%;           /* #EC4899 - Magenta Sparkle */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 15%;              /* Subtle borders */
+    --input: 0 0% 10%;               /* Dark inputs */
+    --ring: 261 92% 65%;             /* Purple focus rings */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;               /* Slightly more rounded */
+    
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(330, 83%, 58%), hsl(261, 92%, 65%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 6%), hsl(0, 0%, 4%));
+    
+    /* Animation variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --glow-primary: 0 0 30px hsl(261, 92%, 65% / 0.3);
+    --glow-accent: 0 0 20px hsl(330, 83%, 58% / 0.4);
 
     --sidebar-background: 0 0% 98%;
 
@@ -55,42 +65,12 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* Optional light mode (keeping dark as default) */
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
+    --primary: 261 92% 65%;
+    --primary-foreground: 0 0% 100%;
   }
 }
 
@@ -100,6 +80,113 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground;
+  }
+}
+
+@layer components {
+  /* Hero gradient text effect */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: var(--glow-primary);
+  }
+  
+  .glow-accent {
+    box-shadow: var(--glow-accent);
+  }
+  
+  /* Grid animation for hero */
+  .treasure-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 4px;
+    width: 200px;
+    height: 200px;
+  }
+  
+  .grid-dot {
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--muted));
+    border-radius: 50%;
+    transition: var(--transition-smooth);
+  }
+  
+  .grid-dot.active {
+    background: hsl(var(--primary));
+    box-shadow: var(--glow-primary);
+    animation: pulse 2s infinite;
+  }
+  
+  .grid-dot.treasure {
+    background: hsl(var(--accent));
+    box-shadow: var(--glow-accent);
+    animation: treasure-glow 3s infinite;
+  }
+  
+  /* Card hover effects */
+  .feature-card {
+    transition: var(--transition-smooth);
+    border: 1px solid hsl(var(--border));
+  }
+  
+  .feature-card:hover {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 8px 32px hsl(var(--primary) / 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+@layer utilities {
+  /* Animation keyframes */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
+  @keyframes treasure-glow {
+    0%, 100% { 
+      box-shadow: var(--glow-accent);
+      transform: scale(1);
+    }
+    50% { 
+      box-shadow: 0 0 40px hsl(var(--accent) / 0.6);
+      transform: scale(1.1);
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 }
