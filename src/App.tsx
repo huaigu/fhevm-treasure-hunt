@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import EnvironmentSetup from "./pages/EnvironmentSetup";
 import ContractDevelopment from "./pages/ContractDevelopment";
+import FrontendIntegration from "./pages/FrontendIntegration";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/environment-setup" element={<EnvironmentSetup />} />
           <Route path="/contract-development" element={<ContractDevelopment />} />
+          <Route path="/frontend-integration" element={<FrontendIntegration />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

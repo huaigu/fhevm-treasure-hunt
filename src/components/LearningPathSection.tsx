@@ -93,10 +93,13 @@ const LearningPathSection = () => {
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     ) : (
-                      <div className="flex items-center space-x-1 text-primary">
+                      <Link 
+                        to="/frontend-integration" 
+                        className="flex items-center space-x-1 text-primary hover:text-primary/80 transition-colors"
+                      >
                         <span className="text-sm font-medium">开始学习</span>
                         <ArrowRight className="w-4 h-4" />
-                      </div>
+                      </Link>
                     )}
                   </div>
                 </CardContent>
