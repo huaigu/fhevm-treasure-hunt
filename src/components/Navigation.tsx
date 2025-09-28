@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Github, ExternalLink } from "lucide-react";
+import { Menu, X, Github, ExternalLink, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,15 +26,22 @@ const Navigation = () => {
             >
               Tutorial
             </a>
-            <a 
-              href="#demo" 
+            <a
+              href="#demo"
               className="text-secondary-foreground hover:text-foreground transition-colors flex items-center space-x-1"
             >
               <span>Live Demo</span>
               <ExternalLink className="w-4 h-4" />
             </a>
-            <a 
-              href="https://github.com" 
+            <Link
+              to="/llm-txt"
+              className="text-secondary-foreground hover:text-foreground transition-colors flex items-center space-x-1"
+            >
+              <FileText className="w-4 h-4" />
+              <span>LLM.txt</span>
+            </Link>
+            <a
+              href="https://github.com"
               className="text-secondary-foreground hover:text-foreground transition-colors flex items-center space-x-1"
               target="_blank"
               rel="noopener noreferrer"
@@ -81,8 +89,15 @@ const Navigation = () => {
             >
               Live Demo
             </a>
-            <a 
-              href="https://github.com" 
+            <Link
+              to="/llm-txt"
+              className="block text-secondary-foreground hover:text-foreground transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              LLM.txt
+            </Link>
+            <a
+              href="https://github.com"
               className="block text-secondary-foreground hover:text-foreground transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
