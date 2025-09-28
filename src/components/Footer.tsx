@@ -11,10 +11,10 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">🏆</span>
               </div>
-              <span className="text-lg font-semibold">机密寻宝之旅</span>
+              <span className="text-lg font-semibold">FHEVM Quest</span>
             </div>
             <p className="text-secondary-foreground text-sm leading-relaxed">
-              一个交互式 FHEVM 教程，帮助 Web3 开发者掌握全同态加密技术，构建真正的隐私保护 DApp。
+              An interactive FHEVM tutorial helping Web3 developers master fully homomorphic encryption and build truly privacy-preserving DApps.
             </p>
             <div className="flex items-center space-x-4">
               <a 
@@ -36,7 +36,7 @@ const Footer = () => {
 
           {/* Links */}
           <div className="space-y-4">
-            <h3 className="font-medium text-foreground">相关链接</h3>
+            <h3 className="font-medium text-foreground">Related Links</h3>
             <div className="space-y-3">
               <a 
                 href="https://www.zama.ai/" 
@@ -44,7 +44,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Zama 官网
+                Zama Official
               </a>
               <a 
                 href="https://docs.zama.ai/fhevm" 
@@ -52,7 +52,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                FHEVM 文档
+                FHEVM Documentation
               </a>
               <a 
                 href="https://github.com/zama-ai/fhevm" 
@@ -62,26 +62,18 @@ const Footer = () => {
               >
                 FHEVM GitHub
               </a>
-              <a 
-                href="https://fhevmjs.zama.ai/" 
-                className="block text-secondary-foreground hover:text-primary transition-colors text-sm"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                fhevmjs 库
-              </a>
             </div>
           </div>
 
           {/* About */}
           <div className="space-y-4">
-            <h3 className="font-medium text-foreground">关于项目</h3>
+            <h3 className="font-medium text-foreground">About Project</h3>
             <div className="space-y-3 text-sm text-secondary-foreground">
               <p>
-                本项目为 Zama Bounty Season 10 设计，旨在推广 FHEVM 技术在实际应用中的使用。
+                This project is designed for Zama Bounty Season 10 to promote the use of FHEVM technology in real-world applications.
               </p>
               <p>
-                通过构建一个有趣的寻宝游戏，开发者可以直观地理解全同态加密如何在区块链上保护隐私。
+                By building an engaging treasure hunt game, developers can intuitively understand how fully homomorphic encryption protects privacy on blockchain.
               </p>
               <div className="flex items-center space-x-1 text-xs text-muted-foreground pt-2">
                 <span>Made with</span>
@@ -95,7 +87,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
           <div className="text-sm text-muted-foreground">
-            © 2024 机密寻宝之旅. MIT License.
+            © 2025 FHEVM Quest. MIT License.
           </div>
           <div className="text-sm text-muted-foreground">
             Powered by <span className="text-primary font-medium">Zama FHEVM</span>

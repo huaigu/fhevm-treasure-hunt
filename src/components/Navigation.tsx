@@ -14,22 +14,22 @@ const Navigation = () => {
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">🏆</span>
             </div>
-            <span className="text-xl font-semibold">机密寻宝之旅</span>
+            <span className="text-xl font-semibold">FHEVM Quest</span>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a 
-              href="#tutorial" 
+            <a
+              href="#tutorial"
               className="text-secondary-foreground hover:text-foreground transition-colors"
             >
-              教程
+              Tutorial
             </a>
             <a 
               href="#demo" 
               className="text-secondary-foreground hover:text-foreground transition-colors flex items-center space-x-1"
             >
-              <span>在线演示</span>
+              <span>Live Demo</span>
               <ExternalLink className="w-4 h-4" />
             </a>
             <a 
@@ -45,11 +45,11 @@ const Navigation = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button 
-              variant="default" 
+            <Button
+              variant="default"
               className="bg-primary hover:bg-primary/90 text-primary-foreground glow-primary"
             >
-              开始学习
+              Start Learning
             </Button>
           </div>
 
@@ -67,19 +67,19 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 space-y-4">
-            <a 
-              href="#tutorial" 
+            <a
+              href="#tutorial"
               className="block text-secondary-foreground hover:text-foreground transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              教程
+              Tutorial
             </a>
-            <a 
-              href="#demo" 
+            <a
+              href="#demo"
               className="block text-secondary-foreground hover:text-foreground transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              在线演示
+              Live Demo
             </a>
             <a 
               href="https://github.com" 
@@ -88,11 +88,11 @@ const Navigation = () => {
             >
               GitHub
             </a>
-            <Button 
-              variant="default" 
+            <Button
+              variant="default"
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              开始学习
+              Start Learning
             </Button>
           </div>
         )}

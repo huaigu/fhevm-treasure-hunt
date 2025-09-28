@@ -9,13 +9,13 @@ const FinalCTASection = () => {
           {/* Main CTA */}
           <div className="space-y-6">
             <h2 className="text-3xl sm:text-4xl font-bold">
-              准备好挖掘你的第一个
+              Ready to uncover your first
               <br />
-              <span className="gradient-text">链上秘密</span>了吗？
+              <span className="gradient-text">on-chain secret</span>?
             </h2>
             
             <p className="text-lg text-secondary-foreground max-w-2xl mx-auto leading-relaxed">
-              本教程完全免费，代码完全开源。立即开始，成为链上隐私计算的早期构建者。
+              This tutorial is completely free with fully open-source code. Start now and become an early builder of on-chain privacy computing.
             </p>
           </div>
 
@@ -26,7 +26,7 @@ const FinalCTASection = () => {
               className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-4 rounded-xl glow-primary transition-all duration-300 hover:scale-105"
             >
               <Compass className="w-5 h-5 mr-2" />
-              开启寻宝之旅
+              Start Your Journey
             </Button>
             
             <Button 
@@ -35,7 +35,7 @@ const FinalCTASection = () => {
               className="border-border hover:border-primary text-lg px-8 py-4 rounded-xl transition-all duration-300"
             >
               <Github className="w-5 h-5 mr-2" />
-              查看源码
+              View Source Code
             </Button>
           </div>
 
@@ -45,9 +45,9 @@ const FinalCTASection = () => {
               <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mx-auto">
                 <Sparkles className="w-6 h-6 text-primary" />
               </div>
-              <h3 className="font-medium">完全免费</h3>
+              <h3 className="font-medium">Completely Free</h3>
               <p className="text-sm text-secondary-foreground">
-                无需付费，即可学习最前沿的 FHE 技术
+                Learn cutting-edge FHE technology at no cost
               </p>
             </div>
             
@@ -55,9 +55,9 @@ const FinalCTASection = () => {
               <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mx-auto">
                 <Github className="w-6 h-6 text-accent" />
               </div>
-              <h3 className="font-medium">开源透明</h3>
+              <h3 className="font-medium">Open Source</h3>
               <p className="text-sm text-secondary-foreground">
-                所有代码开源，可复用、可修改、可学习
+                All code is open source, reusable, modifiable, and learnable
               </p>
             </div>
             
@@ -65,9 +65,9 @@ const FinalCTASection = () => {
               <div className="w-12 h-12 bg-muted/20 rounded-xl flex items-center justify-center mx-auto">
                 <ExternalLink className="w-6 h-6 text-foreground" />
               </div>
-              <h3 className="font-medium">实用教程</h3>
+              <h3 className="font-medium">Practical Tutorial</h3>
               <p className="text-sm text-secondary-foreground">
-                通过实战项目，掌握 FHEVM 核心概念
+                Master FHEVM core concepts through hands-on projects
               </p>
             </div>
           </div>
@@ -76,18 +76,18 @@ const FinalCTASection = () => {
           <div className="mt-12 p-6 rounded-xl bg-card border border-border">
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
               <div className="text-center">
-                <div className="text-2xl font-bold text-primary">70+ 分钟</div>
-                <div className="text-sm text-secondary-foreground">完整教程时长</div>
+                <div className="text-2xl font-bold text-primary">70+ minutes</div>
+                <div className="text-sm text-secondary-foreground">Complete tutorial duration</div>
               </div>
               <div className="hidden sm:block w-px h-8 bg-border" />
               <div className="text-center">
-                <div className="text-2xl font-bold text-accent">3 个</div>
-                <div className="text-sm text-secondary-foreground">核心学习模块</div>
+                <div className="text-2xl font-bold text-accent">3 modules</div>
+                <div className="text-sm text-secondary-foreground">Core learning modules</div>
               </div>
               <div className="hidden sm:block w-px h-8 bg-border" />
               <div className="text-center">
                 <div className="text-2xl font-bold text-foreground">100%</div>
-                <div className="text-sm text-secondary-foreground">实战项目驱动</div>
+                <div className="text-sm text-secondary-foreground">Project-driven learning</div>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@ const FinalCTASection = () => {
           {/* Trust Badge */}
           <div className="mt-8">
             <p className="text-sm text-muted-foreground">
-              🏆 为 <span className="text-primary font-medium">Zama Bounty S10</span> 精心设计
+              🏆 Designed for <span className="text-primary font-medium">Zama Bounty S10</span>
             </p>
           </div>
         </div>

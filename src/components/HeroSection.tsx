@@ -61,15 +61,15 @@ const HeroSection = () => {
         {/* Main Title */}
         <div className="space-y-4 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-            不止是 Hello World：
+            Beyond Hello World:
             <br />
             <span className="gradient-text">
-              亲手构建你的第一个机密 DApp
+              Build Your First Confidential DApp
             </span>
           </h1>
           
           <p className="text-lg sm:text-xl text-secondary-foreground max-w-3xl mx-auto leading-relaxed">
-            一个为 Web3 开发者设计的交互式 FHEVM 教程。通过构建一个有趣的链上寻宝游戏，轻松掌握全同态加密的应用。
+            An interactive FHEVM tutorial designed for Web3 developers. Learn fully homomorphic encryption by building an engaging on-chain treasure hunt game.
           </p>
         </div>
 
@@ -90,11 +90,11 @@ const HeroSection = () => {
             className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-4 rounded-xl glow-primary transition-all duration-300 hover:scale-105"
           >
             <Compass className="w-5 h-5 mr-2" />
-            开启寻宝之旅
+            Start Your Journey
           </Button>
           
           <p className="text-sm text-muted-foreground">
-            专为 Zama S10 Bounty 设计
+            Designed for Zama S10 Bounty
           </p>
         </div>
       </div>

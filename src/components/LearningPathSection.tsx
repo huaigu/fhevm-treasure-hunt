@@ -6,24 +6,24 @@ const LearningPathSection = () => {
   const steps = [
     {
       icon: Terminal,
-      title: "环境准备",
-      description: "从零开始，配置 Hardhat、连接钱包，掌握 FHEVM 开发的基础设施。",
-      skills: ["Hardhat 配置", "钱包连接", "FHEVM 环境"],
-      duration: "15 分钟"
+      title: "Environment Setup",
+      description: "From scratch, configure Hardhat, connect wallets, and master FHEVM development infrastructure.",
+      skills: ["Hardhat Configuration", "Wallet Connection", "FHEVM Environment"],
+      duration: "15 minutes"
     },
     {
       icon: FileCode,
-      title: "编写机密合约",
-      description: "学习使用 Solidity 编写 FHEVM 合约，处理加密的输入和输出。",
-      skills: ["Solidity FHE", "加密数据类型", "距离计算"],
-      duration: "30 分钟"
+      title: "Writing Confidential Contracts",
+      description: "Learn to write FHEVM contracts with Solidity, handling encrypted inputs and outputs.",
+      skills: ["Solidity FHE", "Encrypted Data Types", "Distance Calculation"],
+      duration: "30 minutes"
     },
     {
       icon: Monitor,
-      title: "构建前端交互",
-      description: "使用 fhevmjs 库在前端加密数据，并解密来自合约的机密结果。",
-      skills: ["fhevmjs 集成", "数据加密", "结果解密"],
-      duration: "25 分钟"
+      title: "Building Frontend Integration",
+      description: "Use fhevm-react hooks to encrypt data on frontend and decrypt confidential results from contracts.",
+      skills: ["fhevm-react Hooks", "Data Encryption", "Result Decryption"],
+      duration: "25 minutes"
     }
   ];
 
@@ -32,10 +32,10 @@ const LearningPathSection = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            <span className="gradient-text">三步</span>开启你的 FHEVM 之旅
+            <span className="gradient-text">Three Steps</span> to Start Your FHEVM Journey
           </h2>
           <p className="text-lg text-secondary-foreground max-w-2xl mx-auto">
-            跟随我们的逐步指导，从零开始构建你的第一个机密 DApp
+            Follow our step-by-step guide to build your first confidential DApp from scratch
           </p>
         </div>
 
@@ -50,7 +50,7 @@ const LearningPathSection = () => {
                     </div>
                   </div>
                   <div className="flex items-center justify-center space-x-2 mb-2">
-                    <span className="text-sm font-medium text-primary">步骤 {index + 1}</span>
+                    <span className="text-sm font-medium text-primary">Step {index + 1}</span>
                     <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                   </div>
                   <CardTitle className="text-xl">{step.title}</CardTitle>
@@ -61,7 +61,7 @@ const LearningPathSection = () => {
                   </p>
                   
                   <div className="space-y-3">
-                    <p className="text-sm font-medium text-foreground">学习要点：</p>
+                    <p className="text-sm font-medium text-foreground">Key Learning Points:</p>
                     <div className="space-y-2">
                       {step.skills.map((skill, skillIndex) => (
                         <div key={skillIndex} className="flex items-center space-x-2">
@@ -81,7 +81,7 @@ const LearningPathSection = () => {
                         to="/environment-setup" 
                         className="flex items-center space-x-1 text-primary hover:text-primary/80 transition-colors"
                       >
-                        <span className="text-sm font-medium">开始学习</span>
+                        <span className="text-sm font-medium">Start Learning</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     ) : index === 1 ? (
@@ -89,7 +89,7 @@ const LearningPathSection = () => {
                         to="/contract-development" 
                         className="flex items-center space-x-1 text-primary hover:text-primary/80 transition-colors"
                       >
-                        <span className="text-sm font-medium">开始学习</span>
+                        <span className="text-sm font-medium">Start Learning</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     ) : (
@@ -97,7 +97,7 @@ const LearningPathSection = () => {
                         to="/frontend-integration" 
                         className="flex items-center space-x-1 text-primary hover:text-primary/80 transition-colors"
                       >
-                        <span className="text-sm font-medium">开始学习</span>
+                        <span className="text-sm font-medium">Start Learning</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     )}

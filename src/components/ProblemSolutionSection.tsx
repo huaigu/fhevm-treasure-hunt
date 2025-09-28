@@ -7,8 +7,8 @@ const ProblemSolutionSection = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            在公开的区块链上，
-            <span className="gradient-text">如何保守秘密？</span>
+            On a public blockchain,
+            <span className="gradient-text">how do you keep secrets?</span>
           </h2>
         </div>
 
@@ -29,18 +29,18 @@ const ProblemSolutionSection = () => {
               
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-destructive">
-                  所有数据，公开透明
+                  All Data, Publicly Transparent
                 </h3>
                 <p className="text-secondary-foreground leading-relaxed">
-                  每一次竞猜，每一个出价，都会被所有人看到。这种透明性限制了 Web3 的应用场景，
-                  使得许多现实世界的用例无法在区块链上实现。
+                  Every guess, every bid, is visible to everyone. This transparency limits Web3 use cases,
+                  preventing many real-world applications from being implemented on blockchain.
                 </p>
               </div>
 
               <div className="flex justify-center space-x-2 text-xs text-muted-foreground">
-                <span className="px-2 py-1 bg-destructive/10 rounded">公开竞价</span>
-                <span className="px-2 py-1 bg-destructive/10 rounded">可见策略</span>
-                <span className="px-2 py-1 bg-destructive/10 rounded">MEV 风险</span>
+                <span className="px-2 py-1 bg-destructive/10 rounded">Public Bidding</span>
+                <span className="px-2 py-1 bg-destructive/10 rounded">Visible Strategy</span>
+                <span className="px-2 py-1 bg-destructive/10 rounded">MEV Risk</span>
               </div>
             </CardContent>
           </Card>
@@ -64,19 +64,19 @@ const ProblemSolutionSection = () => {
               
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-primary">
-                  FHEVM：计算保密，结果可见
+                  FHEVM: Private Computation, Visible Results
                 </h3>
                 <p className="text-secondary-foreground leading-relaxed">
-                  FHEVM 允许智能合约在加密数据上进行计算，而无需解密。实现真正的
-                  <span className="text-accent font-medium">"计算保密，结果可见"</span>，
-                  开启链上隐私新纪元。
+                  FHEVM enables smart contracts to compute on encrypted data without decryption. Achieving true
+                  <span className="text-accent font-medium">"private computation, visible results"</span>,
+                  ushering in a new era of on-chain privacy.
                 </p>
               </div>
 
               <div className="flex justify-center space-x-2 text-xs text-muted-foreground">
-                <span className="px-2 py-1 bg-primary/10 rounded">隐私保护</span>
-                <span className="px-2 py-1 bg-primary/10 rounded">同态加密</span>
-                <span className="px-2 py-1 bg-primary/10 rounded">可验证计算</span>
+                <span className="px-2 py-1 bg-primary/10 rounded">Privacy Protection</span>
+                <span className="px-2 py-1 bg-primary/10 rounded">Homomorphic Encryption</span>
+                <span className="px-2 py-1 bg-primary/10 rounded">Verifiable Computing</span>
               </div>
             </CardContent>
           </Card>
@@ -87,17 +87,17 @@ const ProblemSolutionSection = () => {
           <div className="flex items-center space-x-6 text-sm">
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-muted rounded-full" />
-              <span className="text-muted-foreground">加密输入</span>
+              <span className="text-muted-foreground">Encrypted Input</span>
             </div>
             <div className="text-primary">→</div>
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-primary rounded-full animate-pulse" />
-              <span className="text-foreground">FHE 计算</span>
+              <span className="text-foreground">FHE Computation</span>
             </div>
             <div className="text-accent">→</div>
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-accent rounded-full" />
-              <span className="text-accent">公开结果</span>
+              <span className="text-accent">Public Result</span>
             </div>
           </div>
         </div>

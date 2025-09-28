@@ -27,7 +27,7 @@ const ContractDevelopment = () => {
               <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
                 <Code className="w-4 h-4 text-primary" />
               </div>
-              <span className="font-semibold">机密寻宝之旅</span>
+              <span className="font-semibold">FHEVM Quest</span>
             </div>
           </div>
         </div>
