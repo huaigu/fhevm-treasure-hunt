@@ -54,6 +54,7 @@ export default {
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
         'gradient-subtle': 'var(--gradient-subtle)',
+        'gradient-zama-hero': 'var(--gradient-zama-hero)',
       },
       borderRadius: {
         lg: "var(--radius)",

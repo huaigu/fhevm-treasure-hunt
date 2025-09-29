@@ -55,8 +55,8 @@ const TreasureGrid = () => {
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 px-4 sm:px-6 lg:px-8">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-subtle opacity-50" />
+      {/* Zama-style background gradient */}
+      <div className="absolute inset-0 bg-gradient-zama-hero" />
       
       <div className="relative max-w-4xl mx-auto text-center space-y-8">
         {/* Main Title */}
