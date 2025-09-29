@@ -109,20 +109,31 @@ const FrontendIntegration = () => {
                     
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`// In your React component
-import { useState } from "react";
+                        <code>{`// Required dependencies (add to package.json):
+// "@fhevm/react": "0.3.0",
+// "ethers": "6.15.0"
+
+// In your React component
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import { useFhevm } from "@fhevm/react";
 
 function App() {
+  const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [userAddress, setUserAddress] = useState("");
+  const [chainId, setChainId] = useState();
 
   const connectWallet = async () => {
     if (window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      setSigner(signer);
-      setUserAddress(await signer.getAddress());
+      const ethProvider = new ethers.BrowserProvider(window.ethereum);
+      const ethSigner = await ethProvider.getSigner();
+      const network = await ethProvider.getNetwork();
+
+      setProvider(window.ethereum); // EIP-1193 provider for FHEVM
+      setSigner(ethSigner);
+      setUserAddress(await ethSigner.getAddress());
+      setChainId(Number(network.chainId));
     } else {
       alert("Please install MetaMask!");
     }
@@ -131,7 +142,7 @@ function App() {
   return (
     <div>
       {userAddress ? (
-        <p>Connected: {userAddress}</p>
+        <p>Connected: {userAddress} (Chain: {chainId})</p>
       ) : (
         <button onClick={connectWallet}>Connect Wallet</button>
       )}
@@ -154,14 +165,27 @@ function App() {
                     
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`// Add contract address and ABI at the top of your component
-import TreasureHuntABI from "@/abi/TreasureHuntABI.json"; // Assuming ABI file is generated
-const CONTRACT_ADDRESS = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // Replace with address deployed in Part 2
+                        <code>{`// Add contract imports at the top of your component
+import { TreasureHuntABI } from "../abi/TreasureHuntABI";
+import { TreasureHuntAddresses } from "../abi/TreasureHuntAddresses";
 
 // ...
-// After connectWallet succeeds
-const contract = new ethers.Contract(CONTRACT_ADDRESS, TreasureHuntABI.abi, signer);
-// You can save this contract instance in state for later use`}</code>
+// Dynamic contract address based on network
+const [contract, setContract] = useState(null);
+const [contractAddress, setContractAddress] = useState("");
+
+useEffect(() => {
+  if (signer && chainId) {
+    const chainIdStr = chainId.toString();
+    const address = TreasureHuntAddresses[chainIdStr]?.address;
+
+    if (address && address !== "0x0000000000000000000000000000000000000000") {
+      setContractAddress(address);
+      const contractInstance = new ethers.Contract(address, TreasureHuntABI.abi, signer);
+      setContract(contractInstance);
+    }
+  }
+}, [signer, chainId]);`}</code>
                       </pre>
                     </div>
                   </CardContent>
@@ -186,13 +210,13 @@ const contract = new ethers.Contract(CONTRACT_ADDRESS, TreasureHuntABI.abi, sign
                     This is the most critical step for interacting with FHEVM. We need to create an fhevm instance that will handle all encryption and decryption operations.
                   </p>
                   
-                  <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                  <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">
                     <div className="flex items-start gap-3">
-                      <span className="text-lg">💡</span>
+                      <span className="text-lg">✨</span>
                       <div>
-                        <p className="font-medium text-amber-800">Tip</p>
-                        <p className="text-sm text-amber-700">
-                          Zama's official <code className="px-1 py-0.5 bg-amber-100 rounded">@fhevm/react</code> library provides a convenient useFhevm Hook to simplify this process. But in this tutorial, to clearly show each step, we will execute this process manually.
+                        <p className="font-medium text-primary">Best Practice</p>
+                        <p className="text-sm text-primary/80">
+                          We'll use Zama's official <code className="px-1 py-0.5 bg-primary/20 rounded">@fhevm/react</code> library with the useFhevm hook, which provides automatic FHEVM instance management, error handling, and proper cleanup.
                         </p>
                       </div>
                     </div>
@@ -204,28 +228,32 @@ const contract = new ethers.Contract(CONTRACT_ADDRESS, TreasureHuntABI.abi, sign
                 <CardContent className="pt-6">
                   <div className="bg-muted/50 rounded-lg p-4">
                     <pre className="text-sm text-foreground overflow-x-auto">
-                      <code>{`import { createFhevmInstance } from "@fhevm/runtime";
+                      <code>{`import { useFhevm } from "@fhevm/react";
 
 // ...
-const [fhevmInstance, setFhevmInstance] = useState(null);
-const [isInitialized, setIsInitialized] = useState(false);
+const [chainId, setChainId] = useState();
 
-const initializeFhevm = async () => {
-    if (provider && !isInitialized) {
-        // 1. Create instance from provider
-        const instance = await createFhevmInstance({ provider });
+// FHEVM instance with automatic management
+const {
+  instance: fhevmInstance,
+  status: fhevmStatus,
+  error: fhevmError,
+} = useFhevm({
+  provider,
+  chainId,
+  enabled: isConnected && chainId === 11155111, // Enable only for Sepolia
+});
 
-        // 2. Generate a public key for decryption
-        // This step requires user signature to prove they own the key
-        await instance.generatePublicKey({ verifyingContract: CONTRACT_ADDRESS });
+// Usage in your component:
+// - fhevmInstance: Ready-to-use FHEVM instance
+// - fhevmStatus: "connecting", "connected", "error", etc.
+// - fhevmError: Any initialization errors
 
-        setFhevmInstance(instance);
-        setIsInitialized(true);
-        console.log("FHEVM instance initialized!");
-    }
-};
-
-// You can call initializeFhevm() after wallet connection succeeds`}</code>
+// The hook automatically:
+// 1. Creates FHEVM instance from provider
+// 2. Handles network changes and reconnections
+// 3. Manages public key generation and signatures
+// 4. Provides proper cleanup on unmount`}</code>
                     </pre>
                   </div>
                 </CardContent>
@@ -268,19 +296,63 @@ const initializeFhevm = async () => {
                   <CardContent>
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`const handleCreateTreasure = async () => {
-    if (contract && fhevmInstance) {
-        try {
-            const tx = await contract.createTreasure();
-            console.log("Creating treasure, transaction hash:", tx.hash);
-            await tx.wait();
-            alert("New treasure created successfully!");
-        } catch (e) {
-            console.error(e);
-            alert("Error creating treasure.");
-        }
+                        <code>{`// Enhanced create treasure with proper error handling
+const [isCreatingTreasure, setIsCreatingTreasure] = useState(false);
+const [error, setError] = useState("");
+
+const handleCreateTreasure = async () => {
+    if (!treasureHunt.canCreateTreasure) {
+        setError("Cannot create treasure. Check wallet connection and network.");
+        return;
     }
-};`}</code>
+
+    setIsCreatingTreasure(true);
+    setError("");
+
+    try {
+        await treasureHunt.createTreasure();
+        console.log("Treasure creation initiated");
+        // Success feedback is handled by the hook's message state
+    } catch (e) {
+        console.error("Create treasure error:", e);
+
+        // Handle specific error types
+        if (e.code === 'ACTION_REJECTED') {
+            setError("Transaction cancelled by user.");
+        } else if (e.code === 'INSUFFICIENT_FUNDS') {
+            setError("Insufficient funds for gas fees.");
+        } else if (e.reason) {
+            setError(\`Contract error: \${e.reason}\`);
+        } else {
+            setError("Failed to create treasure. Please try again.");
+        }
+    } finally {
+        setIsCreatingTreasure(false);
+    }
+};
+
+// UI with loading states and error feedback
+{treasureHunt.isOwner && (
+    <div className="space-y-2">
+        <button
+            onClick={handleCreateTreasure}
+            disabled={!treasureHunt.canCreateTreasure || isCreatingTreasure}
+            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            {isCreatingTreasure ? "Creating Treasure..." : "Create New Treasure"}
+        </button>
+        {error && (
+            <div className="text-sm text-red-600 bg-red-50 p-2 rounded">
+                {error}
+            </div>
+        )}
+        {treasureHunt.message && (
+            <div className="text-sm text-green-600 bg-green-50 p-2 rounded">
+                {treasureHunt.message}
+            </div>
+        )}
+    </div>
+)}`}</code>
                       </pre>
                     </div>
                   </CardContent>
@@ -300,22 +372,79 @@ const initializeFhevm = async () => {
               </div>
 
               <p className="text-muted-foreground mb-6">
-                This is the core interaction of the game! We will step-by-step implement the "encrypt → submit → retrieve → decrypt" workflow.
+                This is the core interaction of the game! We will step-by-step implement the "encrypt → submit → retrieve → decrypt" workflow using custom hooks for better organization and reusability.
               </p>
 
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">UI:</CardTitle>
+                    <CardTitle className="text-lg">Custom Hook Setup:</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`<div>
-    <input type="number" placeholder="Guess X" value={guessX} onChange={(e) => setGuessX(e.target.value)} />
-    <input type="number" placeholder="Guess Y" value={guessY} onChange={(e) => setGuessY(e.target.value)} />
-    <button onClick={handleGuess}>Submit Guess</button>
-    {decryptedDistance !== null && <p>Your distance to treasure: {decryptedDistance}</p>}
+                        <code>{`import { useTreasureHunt } from "../hooks/useTreasureHunt";
+import { useInMemoryStorage } from "../hooks/useInMemoryStorage";
+
+// Initialize storage for FHEVM decryption signatures
+const { storage: fhevmDecryptionSignatureStorage } = useInMemoryStorage();
+
+// Use the treasure hunt hook with all necessary dependencies
+const treasureHunt = useTreasureHunt({
+  instance: fhevmInstance,
+  fhevmDecryptionSignatureStorage,
+  eip1193Provider: provider,
+  chainId,
+  ethersSigner,
+  ethersReadonlyProvider,
+  sameChain,
+  sameSigner,
+});`}</code>
+                      </pre>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">UI Implementation:</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="bg-muted/50 rounded-lg p-4">
+                      <pre className="text-sm text-foreground overflow-x-auto">
+                        <code>{`// State for coordinate selection
+const [selectedPosition, setSelectedPosition] = useState({ x: 0, y: 0 });
+
+// Handle grid cell click
+const handleGridClick = (x, y) => {
+  setSelectedPosition({ x, y });
+};
+
+// Make guess using the custom hook
+const makeGuess = async () => {
+  if (!selectedPosition) return;
+
+  await treasureHunt.makeGuess(selectedPosition.x, selectedPosition.y);
+};
+
+// UI Components
+<div className="grid grid-cols-8 gap-1 max-w-64 mx-auto">
+  {Array.from({ length: 64 }, (_, index) => {
+    const coords = { x: index % 8, y: Math.floor(index / 8) };
+    const isSelected = selectedPosition &&
+      selectedPosition.x === coords.x && selectedPosition.y === coords.y;
+
+    return (
+      <div
+        key={index}
+        className={\`w-6 h-6 rounded-sm cursor-pointer \${
+          isSelected ? 'bg-primary ring-2 ring-primary/30' : 'bg-muted-foreground/30'
+        } hover:bg-primary/60\`}
+        onClick={() => handleGridClick(coords.x, coords.y)}
+        title={\`Position (\${coords.x}, \${coords.y})\`}
+      />
+    );
+  })}
 </div>`}</code>
                       </pre>
                     </div>
@@ -324,51 +453,62 @@ const initializeFhevm = async () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Logic:</CardTitle>
+                    <CardTitle className="text-lg">Hook Implementation Logic:</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`const [decryptedDistance, setDecryptedDistance] = useState(null);
+                        <code>{`// Inside useTreasureHunt hook - the encryption and submission logic:
 
-const handleGuess = async () => {
-    if (!contract || !fhevmInstance) {
-        alert("Please connect wallet and initialize FHEVM first.");
-        return;
+const makeGuess = useCallback(async (x: number, y: number) => {
+  if (!instance || !ethersSigner || !contract) return;
+
+  setIsMakingGuess(true);
+  try {
+    // Step 1: Encrypt coordinates using FHEVM instance
+    const encryptedX = await instance.createEncryptedValue(x, "uint8");
+    const encryptedY = await instance.createEncryptedValue(y, "uint8");
+
+    // Step 2: Submit encrypted guess to contract
+    const tx = await contract.guess(encryptedX, encryptedY);
+    await tx.wait();
+
+    // Step 3: Read encrypted distance from contract
+    const userAddress = await ethersSigner.getAddress();
+    const encryptedDistance = await readOnlyContract.userDistances(userAddress);
+    setEncryptedDistance(encryptedDistance);
+
+    setMessage(\`Guess submitted! Distance encrypted. Click "Decrypt Distance" to see result.\`);
+  } catch (error) {
+    console.error("Error making guess:", error);
+    setMessage("Error making guess. Please try again.");
+  } finally {
+    setIsMakingGuess(false);
+  }
+}, [instance, ethersSigner, contract]);
+
+// Separate decryption function with signature storage
+const decryptDistance = useCallback(async () => {
+  if (!instance || !contractAddress || !encryptedDistance) return;
+
+  setIsDecrypting(true);
+  try {
+    const distance = await instance.decrypt(contractAddress, encryptedDistance);
+    setDecryptedDistance(Number(distance));
+    setIsDecrypted(true);
+
+    if (distance === 0) {
+      setMessage("🎉 Congratulations! You found the treasure!");
+    } else {
+      setMessage(\`Distance to treasure: \${distance}\`);
     }
-
-    try {
-        // Step 1: Encrypt user's guess
-        // We use encrypt8 because our coordinates are euint8 type
-        console.log("Encrypting guess...");
-        const encryptedX = await fhevmInstance.encrypt8(parseInt(guessX));
-        const encryptedY = await fhevmInstance.encrypt8(parseInt(guessY));
-
-        // Step 2: Call contract's guess function, submit encrypted data
-        console.log("Submitting guess to contract...");
-        const tx = await contract.guess(encryptedX, encryptedY);
-        await tx.wait();
-        console.log("Guess submitted successfully!");
-
-        // Step 3: Read encrypted distance from contract's public mapping
-        console.log("Reading encrypted distance from contract...");
-        const encryptedDistance = await contract.userDistances(userAddress);
-
-        // Step 4: Perform off-chain decryption locally
-        console.log("Decrypting distance locally...");
-        const distance = await fhevmInstance.decrypt(CONTRACT_ADDRESS, encryptedDistance);
-        
-        setDecryptedDistance(distance);
-
-        if (distance === 0) {
-            alert("Congratulations! You found the treasure! 🎉");
-        }
-
-    } catch (e) {
-        console.error(e);
-        alert("An error occurred during the guess.");
-    }
-};`}</code>
+  } catch (error) {
+    console.error("Error decrypting:", error);
+    setMessage("Error decrypting distance. Please try again.");
+  } finally {
+    setIsDecrypting(false);
+  }
+}, [instance, contractAddress, encryptedDistance]);`}</code>
                       </pre>
                     </div>
                   </CardContent>
@@ -388,7 +528,7 @@ const handleGuess = async () => {
               </div>
 
               <p className="text-muted-foreground mb-6">
-                Combining all the above logic together, we get a fully functional DApp frontend!
+                Combining all the above patterns together, we get a production-ready DApp frontend! The complete implementation can be found in the treasure-hunt-demo directory.
               </p>
 
               <Card className="mb-6">
@@ -397,8 +537,16 @@ const handleGuess = async () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">
-                    Below is an embedded, fully functional "Confidential Treasure Hunt Game" demo. Please connect your Sepolia testnet wallet, ensure you have test ETH, and experience the magic of FHEVM yourself!
+                    The complete treasure hunt implementation demonstrates all the concepts covered in this tutorial. You can find the full source code in <code className="px-1 py-0.5 bg-muted rounded text-xs">treasure-hunt-demo/packages/site/</code> which includes:
                   </p>
+                  <ul className="list-disc list-inside text-sm text-muted-foreground mt-2 space-y-1">
+                    <li>Production-ready error handling and loading states</li>
+                    <li>Network validation and automatic network switching</li>
+                    <li>Custom hooks for state management (useTreasureHunt, useInMemoryStorage)</li>
+                    <li>Proper FHEVM integration with @fhevm/react</li>
+                    <li>Interactive 8x8 grid UI with coordinate selection</li>
+                    <li>Encrypted distance calculation and decryption</li>
+                  </ul>
 
                   <Card className="border-primary/20 bg-primary/5">
                     <CardContent className="pt-6">
@@ -407,11 +555,14 @@ const handleGuess = async () => {
                           ⌨️
                         </div>
                         <div>
-                          <h3 className="font-semibold mb-2">Hands-on Practice</h3>
+                          <h3 className="font-semibold mb-2">Key Features Demonstrated</h3>
                           <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                            <li>First, as contract Owner, click "Create New Treasure".</li>
-                            <li>Then start submitting your guess coordinates (0-255) in the input boxes.</li>
-                            <li>Observe the distance hints returned below, keep adjusting your guesses until the distance is 0!</li>
+                            <li>Automatic wallet connection with network validation (Sepolia required)</li>
+                            <li>FHEVM instance initialization using @fhevm/react hooks</li>
+                            <li>Interactive grid-based coordinate selection (8x8 grid)</li>
+                            <li>Encrypted coordinate submission with proper error handling</li>
+                            <li>Distance decryption with signature storage management</li>
+                            <li>Owner controls for treasure creation and game management</li>
                           </ol>
                         </div>
                       </div>
@@ -421,13 +572,21 @@ const handleGuess = async () => {
               </Card>
 
               <Card className="border-2 border-dashed border-muted-foreground/30">
-                <CardContent className="py-16 text-center">
-                  <h3 className="text-xl font-semibold mb-4">Embedded Live Demo</h3>
-                  <p className="text-muted-foreground mb-4">
-                    <em>[Your live CodeSandbox/StackBlitz DApp will be embedded here]</em>
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    URL: (To be determined)
+                <CardContent className="py-8 text-center space-y-4">
+                  <h3 className="text-xl font-semibold mb-4">Complete Implementation Reference</h3>
+                  <div className="bg-muted/50 rounded-lg p-4 text-left">
+                    <p className="font-semibold mb-2">File Structure:</p>
+                    <div className="font-mono text-sm text-muted-foreground space-y-1">
+                      <div>📁 treasure-hunt-demo/packages/site/</div>
+                      <div>├── 📄 components/TreasureHuntDemo.tsx <span className="text-primary">(Main Component)</span></div>
+                      <div>├── 📄 hooks/useTreasureHunt.tsx <span className="text-primary">(Game Logic Hook)</span></div>
+                      <div>├── 📄 hooks/useInMemoryStorage.tsx <span className="text-primary">(Storage Hook)</span></div>
+                      <div>├── 📄 abi/TreasureHuntABI.ts <span className="text-primary">(Contract ABI)</span></div>
+                      <div>└── 📄 abi/TreasureHuntAddresses.ts <span className="text-primary">(Contract Addresses)</span></div>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground">
+                    Run <code className="px-2 py-1 bg-muted rounded text-xs">npm run dev</code> in the demo directory to see the full implementation in action!
                   </p>
                 </CardContent>
               </Card>

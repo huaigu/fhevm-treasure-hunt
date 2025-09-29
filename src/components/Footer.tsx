@@ -18,18 +18,12 @@ const Footer = () => {
             </p>
             <div className="flex items-center space-x-4">
               <a 
-                href="https://github.com" 
+                href="https://github.com/huaigu/fhevm-treasure-hunt" 
                 className="text-secondary-foreground hover:text-primary transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Github className="w-5 h-5" />
-              </a>
-              <a 
-                href="#" 
-                className="text-secondary-foreground hover:text-primary transition-colors"
-              >
-                <ExternalLink className="w-5 h-5" />
               </a>
             </div>
           </div>

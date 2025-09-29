@@ -21,14 +21,16 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <a
-              href="#tutorial"
+              href="/#tutorial"
               className="text-secondary-foreground hover:text-foreground transition-colors"
             >
               Tutorial
             </a>
             <a
-              href="#demo"
+              href="https://treasure-hunt-demo.vercel.app"
               className="text-secondary-foreground hover:text-foreground transition-colors flex items-center space-x-1"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span>Live Demo</span>
               <ExternalLink className="w-4 h-4" />
@@ -41,7 +43,7 @@ const Navigation = () => {
               <span>LLM.txt</span>
             </Link>
             <a
-              href="https://github.com"
+              href="https://github.com/huaigu/fhevm-treasure-hunt"
               className="text-secondary-foreground hover:text-foreground transition-colors flex items-center space-x-1"
               target="_blank"
               rel="noopener noreferrer"
@@ -66,15 +68,17 @@ const Navigation = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 space-y-4">
             <a
-              href="#tutorial"
+              href="/#tutorial"
               className="block text-secondary-foreground hover:text-foreground transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Tutorial
             </a>
             <a
-              href="#demo"
+              href="https://treasure-hunt-demo.vercel.app"
               className="block text-secondary-foreground hover:text-foreground transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}
             >
               Live Demo
@@ -87,7 +91,7 @@ const Navigation = () => {
               LLM.txt
             </Link>
             <a
-              href="https://github.com"
+              href="https://github.com/huaigu/fhevm-treasure-hunt"
               className="block text-secondary-foreground hover:text-foreground transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >

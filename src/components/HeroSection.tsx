@@ -62,10 +62,12 @@ const HeroSection = () => {
         {/* Main Title */}
         <div className="space-y-4 animate-fade-in">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-            Beyond Hello World:
+            Beyond Hello World
             <br />
             <span className="gradient-text">
-              Build Your First Confidential DApp
+              Build Your First
+              <br />
+              Confidential DApp
             </span>
           </h1>
           

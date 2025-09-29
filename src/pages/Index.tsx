@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import ProblemSolutionSection from "@/components/ProblemSolutionSection";
 import LearningPathSection from "@/components/LearningPathSection";
 import InteractiveDemoSection from "@/components/InteractiveDemoSection";
+import LLMTxtSection from "@/components/LLMTxtSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import Footer from "@/components/Footer";
 
@@ -14,6 +15,7 @@ const Index = () => {
       <ProblemSolutionSection />
       <LearningPathSection />
       <InteractiveDemoSection />
+      <LLMTxtSection />
       <FinalCTASection />
       <Footer />
     </div>
