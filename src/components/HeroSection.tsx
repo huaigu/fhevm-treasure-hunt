@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Compass, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TreasureGrid = () => {
   const [activeDots, setActiveDots] = useState(new Set<number>());
@@ -85,13 +86,15 @@ const HeroSection = () => {
 
         {/* CTA Button */}
         <div className="space-y-4">
-          <Button 
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-4 rounded-xl glow-primary transition-all duration-300 hover:scale-105"
-          >
-            <Compass className="w-5 h-5 mr-2" />
-            Start Your Journey
-          </Button>
+          <Link to="/environment-setup">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-4 rounded-xl glow-primary transition-all duration-300 hover:scale-105"
+            >
+              <Compass className="w-5 h-5 mr-2" />
+              Start Your Journey
+            </Button>
+          </Link>
           
           <p className="text-sm text-muted-foreground">
             Designed for Zama S10 Bounty

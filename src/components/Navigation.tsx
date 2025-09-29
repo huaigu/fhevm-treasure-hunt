@@ -11,12 +11,12 @@ const Navigation = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">🏆</span>
             </div>
             <span className="text-xl font-semibold">FHEVM Quest</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -49,16 +49,6 @@ const Navigation = () => {
               <Github className="w-4 h-4" />
               <span>GitHub</span>
             </a>
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button
-              variant="default"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground glow-primary"
-            >
-              Start Learning
-            </Button>
           </div>
 
           {/* Mobile menu button */}

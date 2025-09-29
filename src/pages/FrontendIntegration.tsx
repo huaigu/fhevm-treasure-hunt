@@ -7,11 +7,11 @@ import { Code, Wallet, Zap, GamepadIcon, Monitor, ArrowRight } from "lucide-reac
 
 const FrontendIntegration = () => {
   const navigationItems = [
-    { id: "wallet-contract", title: "A. 连接钱包与合约" },
-    { id: "fhevm-instance", title: "B. 初始化 FHEVM 实例" },
-    { id: "admin-operations", title: "C. 管理员操作：创建宝藏" },
-    { id: "player-operations", title: "D. 玩家操作：完整的游戏循环" },
-    { id: "final-demo", title: "E. 最终代码与在线演示" },
+    { id: "wallet-contract", title: "A. Connect Wallet and Contract" },
+    { id: "fhevm-instance", title: "B. Initialize FHEVM Instance" },
+    { id: "admin-operations", title: "C. Admin Operations: Create Treasure" },
+    { id: "player-operations", title: "D. Player Operations: Complete Game Loop" },
+    { id: "final-demo", title: "E. Final Code and Live Demo" },
   ];
 
   const scrollToSection = (id: string) => {
@@ -29,7 +29,7 @@ const FrontendIntegration = () => {
             <div className="sticky top-24">
               <Card className="border-border/40">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">本页导航</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Page Navigation</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <nav className="space-y-1">
@@ -53,21 +53,21 @@ const FrontendIntegration = () => {
             {/* Hero Section */}
             <div className="mb-12">
               <div className="flex items-center gap-2 mb-4">
-                <Badge variant="outline" className="px-3 py-1">第三部分</Badge>
+                <Badge variant="outline" className="px-3 py-1">Part 3</Badge>
                 <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                <Badge variant="secondary" className="px-3 py-1">前端交互</Badge>
+                <Badge variant="secondary" className="px-3 py-1">Frontend Integration</Badge>
               </div>
               
               <h1 className="text-4xl font-bold tracking-tight mb-6">
-                构建前端交互
+                Building Frontend Integration
               </h1>
               
               <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
-                  欢迎来到我们旅程的最后一站！我们已经有了一个强大且安全的智能合约引擎，现在，是时候为它打造一个用户友好的"驾驶舱"了。
+                  Welcome to the final stop of our journey! We already have a powerful and secure smart contract engine. Now, it's time to build a user-friendly "cockpit" for it.
                 </p>
                 <p>
-                  在本章中，你将学习如何使用 ethers.js 和 fhevmjs 库，在React前端应用中完成从连接钱包到与机密合约交互的全过程。
+                  In this chapter, you'll learn how to use ethers.js and fhevm-react hooks to complete the entire process from connecting wallets to interacting with confidential contracts in a React frontend application.
                 </p>
               </div>
 
@@ -78,9 +78,9 @@ const FrontendIntegration = () => {
                       ⌨️
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-2">动手实践</h3>
+                      <h3 className="font-semibold mb-2">Hands-on Practice</h3>
                       <p className="text-sm text-muted-foreground">
-                        我们将在 <code className="px-1 py-0.5 bg-muted rounded text-xs">packages/sites/src/app/</code> 目录下进行主要操作。
+                        We will perform main operations in the <code className="px-1 py-0.5 bg-muted rounded text-xs">packages/sites/src/app/</code> directory.
                       </p>
                     </div>
                   </div>
@@ -94,22 +94,22 @@ const FrontendIntegration = () => {
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <Wallet className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold">A. 连接钱包与合约</h2>
+                <h2 className="text-2xl font-bold">A. Connect Wallet and Contract</h2>
               </div>
 
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">1. 连接 MetaMask</CardTitle>
+                    <CardTitle className="text-lg">1. Connect MetaMask</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-muted-foreground">
-                      任何DApp的第一步都是让用户连接他们的钱包。我们将添加一个按钮，当用户点击时，会弹出MetaMask请求连接。
+                      The first step for any DApp is to let users connect their wallet. We will add a button that, when clicked, will prompt MetaMask to request connection.
                     </p>
                     
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`// 在你的React组件中
+                        <code>{`// In your React component
 import { useState } from "react";
 import { ethers } from "ethers";
 
@@ -145,23 +145,23 @@ function App() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">2. 实例化合约</CardTitle>
+                    <CardTitle className="text-lg">2. Instantiate Contract</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-muted-foreground">
-                      连接成功后，我们需要创建一个ethers.Contract实例，以便调用我们部署的TreasureHunt合约的方法。
+                      After successful connection, we need to create an ethers.Contract instance to call methods of our deployed TreasureHunt contract.
                     </p>
                     
                     <div className="bg-muted/50 rounded-lg p-4">
                       <pre className="text-sm text-foreground overflow-x-auto">
-                        <code>{`// 在你的组件顶部添加合约地址和ABI
-import TreasureHuntABI from "@/abi/TreasureHuntABI.json"; // 假设ABI文件已生成
-const CONTRACT_ADDRESS = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // 替换成你在第二部分部署的地址
+                        <code>{`// Add contract address and ABI at the top of your component
+import TreasureHuntABI from "@/abi/TreasureHuntABI.json"; // Assuming ABI file is generated
+const CONTRACT_ADDRESS = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // Replace with address deployed in Part 2
 
 // ...
-// 在connectWallet成功后
+// After connectWallet succeeds
 const contract = new ethers.Contract(CONTRACT_ADDRESS, TreasureHuntABI.abi, signer);
-// 你可以将这个 contract 实例保存在 state 中以便后续使用`}</code>
+// You can save this contract instance in state for later use`}</code>
                       </pre>
                     </div>
                   </CardContent>
@@ -177,22 +177,22 @@ const contract = new ethers.Contract(CONTRACT_ADDRESS, TreasureHuntABI.abi, sign
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <Zap className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold">B. 初始化 FHEVM 实例</h2>
+                <h2 className="text-2xl font-bold">B. Initialize FHEVM Instance</h2>
               </div>
 
               <Card className="mb-6">
                 <CardContent className="pt-6">
                   <p className="text-muted-foreground mb-4">
-                    这是与FHEVM交互最关键的一步。我们需要创建一个fhevm实例，它将负责处理所有的加密和解密操作。
+                    This is the most critical step for interacting with FHEVM. We need to create an fhevm instance that will handle all encryption and decryption operations.
                   </p>
                   
                   <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
                     <div className="flex items-start gap-3">
                       <span className="text-lg">💡</span>
                       <div>
-                        <p className="font-medium text-amber-800">提示</p>
+                        <p className="font-medium text-amber-800">Tip</p>
                         <p className="text-sm text-amber-700">
-                          Zama官方的 <code className="px-1 py-0.5 bg-amber-100 rounded">@fhevm/react</code> 库提供了便捷的 useFhevm Hook来简化这个过程。但在本教程中，为了清晰地展示每一步，我们将手动执行这个流程。
+                          Zama's official <code className="px-1 py-0.5 bg-amber-100 rounded">@fhevm/react</code> library provides a convenient useFhevm Hook to simplify this process. But in this tutorial, to clearly show each step, we will execute this process manually.
                         </p>
                       </div>
                     </div>
@@ -212,11 +212,11 @@ const [isInitialized, setIsInitialized] = useState(false);
 
 const initializeFhevm = async () => {
     if (provider && !isInitialized) {
-        // 1. 从provider创建实例
+        // 1. Create instance from provider
         const instance = await createFhevmInstance({ provider });
-        
-        // 2. 生成一个用于解密的公钥
-        // 这一步需要用户的签名，以证明他们是密钥的所有者
+
+        // 2. Generate a public key for decryption
+        // This step requires user signature to prove they own the key
         await instance.generatePublicKey({ verifyingContract: CONTRACT_ADDRESS });
 
         setFhevmInstance(instance);
@@ -225,7 +225,7 @@ const initializeFhevm = async () => {
     }
 };
 
-// 你可以在钱包连接成功后调用 initializeFhevm()`}</code>
+// You can call initializeFhevm() after wallet connection succeeds`}</code>
                     </pre>
                   </div>
                 </CardContent>
@@ -240,11 +240,11 @@ const initializeFhevm = async () => {
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <Code className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold">C. 管理员操作：创建宝藏</h2>
+                <h2 className="text-2xl font-bold">C. Admin Operations: Create Treasure</h2>
               </div>
 
               <p className="text-muted-foreground mb-6">
-                这个操作很简单，只有合约的owner才能调用。
+                This operation is simple, only the contract owner can call it.
               </p>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -263,7 +263,7 @@ const initializeFhevm = async () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">逻辑:</CardTitle>
+                    <CardTitle className="text-lg">Logic:</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="bg-muted/50 rounded-lg p-4">
@@ -296,11 +296,11 @@ const initializeFhevm = async () => {
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <GamepadIcon className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold">D. 玩家操作：完整的游戏循环</h2>
+                <h2 className="text-2xl font-bold">D. Player Operations: Complete Game Loop</h2>
               </div>
 
               <p className="text-muted-foreground mb-6">
-                这是游戏的核心交互！我们将一步步实现"加密 → 提交 → 获取 → 解密"的流程。
+                This is the core interaction of the game! We will step-by-step implement the "encrypt → submit → retrieve → decrypt" workflow.
               </p>
 
               <div className="space-y-6">
@@ -324,7 +324,7 @@ const initializeFhevm = async () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">逻辑:</CardTitle>
+                    <CardTitle className="text-lg">Logic:</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="bg-muted/50 rounded-lg p-4">
@@ -338,23 +338,23 @@ const handleGuess = async () => {
     }
 
     try {
-        // 步骤 1: 加密用户的猜测
-        // 我们使用 encrypt8 因为我们的坐标是 euint8 类型
+        // Step 1: Encrypt user's guess
+        // We use encrypt8 because our coordinates are euint8 type
         console.log("Encrypting guess...");
         const encryptedX = await fhevmInstance.encrypt8(parseInt(guessX));
         const encryptedY = await fhevmInstance.encrypt8(parseInt(guessY));
 
-        // 步骤 2: 调用合约的 guess 函数，提交加密数据
+        // Step 2: Call contract's guess function, submit encrypted data
         console.log("Submitting guess to contract...");
         const tx = await contract.guess(encryptedX, encryptedY);
         await tx.wait();
         console.log("Guess submitted successfully!");
 
-        // 步骤 3: 从合约的 public 映射中读取加密后的距离
+        // Step 3: Read encrypted distance from contract's public mapping
         console.log("Reading encrypted distance from contract...");
         const encryptedDistance = await contract.userDistances(userAddress);
 
-        // 步骤 4: 在本地进行链下解密
+        // Step 4: Perform off-chain decryption locally
         console.log("Decrypting distance locally...");
         const distance = await fhevmInstance.decrypt(CONTRACT_ADDRESS, encryptedDistance);
         
@@ -384,20 +384,20 @@ const handleGuess = async () => {
                 <div className="bg-primary/10 p-2 rounded-lg">
                   <Monitor className="h-5 w-5 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold">E. 最终代码与在线演示</h2>
+                <h2 className="text-2xl font-bold">E. Final Code and Live Demo</h2>
               </div>
 
               <p className="text-muted-foreground mb-6">
-                将以上所有逻辑组合在一起，我们就得到了一个功能完整的DApp前端！
+                Combining all the above logic together, we get a fully functional DApp frontend!
               </p>
 
               <Card className="mb-6">
                 <CardHeader>
-                  <CardTitle className="text-xl">最终成果预览</CardTitle>
+                  <CardTitle className="text-xl">Final Result Preview</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">
-                    下面是一个嵌入式的、功能完备的"机密寻宝游戏"演示。请连接你的Sepolia测试网钱包，确保钱包里有测试ETH，然后亲自体验一下FHEVM的魔力吧！
+                    Below is an embedded, fully functional "Confidential Treasure Hunt Game" demo. Please connect your Sepolia testnet wallet, ensure you have test ETH, and experience the magic of FHEVM yourself!
                   </p>
 
                   <Card className="border-primary/20 bg-primary/5">
@@ -407,11 +407,11 @@ const handleGuess = async () => {
                           ⌨️
                         </div>
                         <div>
-                          <h3 className="font-semibold mb-2">动手实践</h3>
+                          <h3 className="font-semibold mb-2">Hands-on Practice</h3>
                           <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-                            <li>先作为合约Owner，点击 "Create New Treasure"。</li>
-                            <li>然后开始在输入框中提交你的猜测坐标 (0-255)。</li>
-                            <li>观察下方返回的距离提示，不断调整你的猜测，直到距离为0！</li>
+                            <li>First, as contract Owner, click "Create New Treasure".</li>
+                            <li>Then start submitting your guess coordinates (0-255) in the input boxes.</li>
+                            <li>Observe the distance hints returned below, keep adjusting your guesses until the distance is 0!</li>
                           </ol>
                         </div>
                       </div>
@@ -422,12 +422,12 @@ const handleGuess = async () => {
 
               <Card className="border-2 border-dashed border-muted-foreground/30">
                 <CardContent className="py-16 text-center">
-                  <h3 className="text-xl font-semibold mb-4">嵌入式在线演示 (Embedded Live Demo)</h3>
+                  <h3 className="text-xl font-semibold mb-4">Embedded Live Demo</h3>
                   <p className="text-muted-foreground mb-4">
                     <em>[Your live CodeSandbox/StackBlitz DApp will be embedded here]</em>
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    URL: (暂定)
+                    URL: (To be determined)
                   </p>
                 </CardContent>
               </Card>
@@ -435,10 +435,10 @@ const handleGuess = async () => {
               <div className="mt-12 text-center">
                 <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
                   <CardContent className="py-8">
-                    <h3 className="text-2xl font-bold mb-4">🎉 恭喜你完成了整个旅程！</h3>
+                    <h3 className="text-2xl font-bold mb-4">🎉 Congratulations on completing the entire journey!</h3>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
-                      你已经掌握了FHEVM的核心技术，从环境搭建到智能合约开发，再到前端交互，构建了一个完整的机密DApp。
-                      现在，是时候用这些技能创造属于你的隐私保护应用了！
+                      You have mastered the core technologies of FHEVM, from environment setup to smart contract development, and frontend integration, building a complete confidential DApp.
+                      Now it's time to use these skills to create your own privacy-preserving applications!
                     </p>
                   </CardContent>
                 </Card>

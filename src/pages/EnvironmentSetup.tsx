@@ -8,35 +8,35 @@ const EnvironmentSetup = () => {
   const steps = [
     {
       icon: Terminal,
-      title: "第一步：从官方模板开始",
-      description: "Zama官方为我们提供了一个基于React的FHEVM模板，这是一个最佳起点。打开你的终端，执行以下命令克隆它：",
+      title: "Step 1: Start with Official Template",
+      description: "Zama provides an official React-based FHEVM template, which is the best starting point. Open your terminal and execute the following commands to clone it:",
       code: "git clone https://github.com/zama-ai/fhevm-react-template.git confidential-treasure-hunt\ncd confidential-treasure-hunt"
     },
     {
       icon: Package,
-      title: "第二步：安装依赖",
-      description: "这个模板项目使用 Yarn 作为包管理器。请在项目根目录下，执行以下命令来安装所有必需的乐高积木：",
+      title: "Step 2: Install Dependencies",
+      description: "This template project uses Yarn as the package manager. In the project root directory, execute the following command to install all required building blocks:",
       code: "yarn install",
-      tip: "💡 如果你没有安装Yarn，可以通过 npm install -g yarn 来进行全局安装。"
+      tip: "💡 If you don't have Yarn installed, you can install it globally with npm install -g yarn."
     },
     {
       icon: FolderTree,
-      title: "第三步：了解我们的工具箱",
-      description: "这个项目是一个 Monorepo (单一代码库)，意味着前端和后端的代码都在一个仓库里，便于管理。我们只需要关注 packages 目录下的这两个文件夹：",
-      code: "/\n├── packages/\n│   ├── contracts/   # 我们的智能合约 (Solidity)\n│   └── sites/       # 我们的前端网站 (React)\n└── package.json     # 项目根配置文件"
+      title: "Step 3: Understanding Our Toolkit",
+      description: "This project is a Monorepo (single repository), meaning both frontend and backend code are in one repository for easy management. We only need to focus on these two folders under the packages directory:",
+      code: "/\n├── packages/\n│   ├── contracts/   # Our smart contracts (Solidity)\n│   └── sites/       # Our frontend website (React)\n└── package.json     # Project root configuration file"
     },
     {
       icon: Server,
-      title: "第四步：启动你的私人区块链",
-      description: "模板已经为我们配置好了所有命令。在项目的**根目录**下，执行以下命令来启动本地的Hardhat测试网络：",
+      title: "Step 4: Start Your Private Blockchain",
+      description: "The template has already configured all commands for us. In the project **root directory**, execute the following command to start the local Hardhat test network:",
       code: "yarn contracts:dev",
-      warning: "⚠️ 保持这个终端窗口打开！网络必须持续运行才能测试合约。"
+      warning: "⚠️ Keep this terminal window open! The network must keep running to test contracts."
     },
     {
       icon: Wallet,
-      title: "第五步：连接 Metamask 钱包",
-      description: "现在我们需要将 Metamask 钱包连接到本地测试网络。请按照以下步骤配置：",
-      code: "网络名称：FHEVM Local\nRPC URL：http://localhost:8545\n链ID：9000\n货币符号：ZAMA\n区块浏览器：http://localhost:8545"
+      title: "Step 5: Connect MetaMask Wallet",
+      description: "Now we need to connect MetaMask wallet to the local test network. Please configure according to the following steps:",
+      code: "Network Name: FHEVM Local\nRPC URL: http://localhost:8545\nChain ID: 9000\nCurrency Symbol: ZAMA\nBlock Explorer: http://localhost:8545"
     }
   ];
 
@@ -48,7 +48,7 @@ const EnvironmentSetup = () => {
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors">
               <ArrowLeft className="w-5 h-5" />
-              <span className="font-medium">返回首页</span>
+              <span className="font-medium">Back to Home</span>
             </Link>
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
@@ -64,10 +64,10 @@ const EnvironmentSetup = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">
-            <span className="gradient-text">环境准备</span>指南
+            <span className="gradient-text">Environment Setup</span> Guide
           </h1>
           <p className="text-lg text-secondary-foreground max-w-2xl mx-auto">
-            让我们一步步配置开发环境，为构建你的第一个机密 DApp 做好准备
+            Let's configure the development environment step by step to prepare for building your first confidential DApp
           </p>
         </div>
 
@@ -125,18 +125,18 @@ const EnvironmentSetup = () => {
               <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
                 <Lightbulb className="w-5 h-5 text-primary" />
               </div>
-              <CardTitle className="text-lg">对 React 不熟悉？别担心！</CardTitle>
+              <CardTitle className="text-lg">New to React? Don't worry!</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-secondary-foreground leading-relaxed">
-              我们的前端使用的是 React 框架，如果您之前没有接触过，看到 sites 目录里的文件可能会有点陌生。
+              Our frontend uses the React framework. If you haven't worked with it before, the files in the sites directory might look unfamiliar.
             </p>
             <p className="text-secondary-foreground leading-relaxed">
-              好消息是，本次教程的<strong>重点是 FHEVM 的集成</strong>，您只需要修改很少的前端代码。我们会像导航一样，精确地告诉您要改动哪几行。
+              The good news is that this tutorial <strong>focuses on FHEVM integration</strong>, and you'll only need to modify very little frontend code. We'll guide you precisely, telling you exactly which lines to change.
             </p>
             <p className="text-secondary-foreground leading-relaxed">
-              如果您对某段代码感到好奇或不解，<strong>强烈建议您尝试把代码复制给 AI 工具</strong>（如 ChatGPT, Gemini, Copilot），然后提问："请用初学者能听懂的方式，解释一下这段 React 代码是做什么的？"。这是一种非常现代且高效的学习方法！
+              If you're curious about any code or don't understand it, <strong>we strongly recommend copying the code to AI tools</strong> (like ChatGPT, Gemini, Copilot) and asking: "Please explain what this React code does in a way beginners can understand?" This is a very modern and efficient learning method!
             </p>
           </CardContent>
         </Card>
@@ -149,12 +149,12 @@ const EnvironmentSetup = () => {
                 <CheckCircle className="w-8 h-8 text-green-500" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold mb-3">🎉 本章完成！</h3>
+            <h3 className="text-xl font-semibold mb-3">🎉 Chapter Complete!</h3>
             <p className="text-secondary-foreground mb-6 max-w-2xl mx-auto">
-              恭喜你！开发环境已经搭建完毕。接下来，我们将进入最有趣的部分——编写你的第一个机密智能合约。
+              Congratulations! The development environment is now set up. Next, we'll move to the most exciting part—writing your first confidential smart contract.
             </p>
             <Button size="lg" className="gradient-bg">
-              继续下一步：编写机密合约
+              Continue to Next Step: Writing Confidential Contracts
             </Button>
           </CardContent>
         </Card>
