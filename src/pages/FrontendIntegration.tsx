@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +6,13 @@ import { Separator } from "@/components/ui/separator";
 import { Code, Wallet, Zap, GamepadIcon, Monitor, ArrowRight } from "lucide-react";
 
 const FrontendIntegration = () => {
+  // Ensure page starts at top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
   const navigationItems = [
     { id: "wallet-contract", title: "A. Connect Wallet and Contract" },
     { id: "fhevm-instance", title: "B. Initialize FHEVM Instance" },

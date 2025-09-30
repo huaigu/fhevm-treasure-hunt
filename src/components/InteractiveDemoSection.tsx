@@ -126,43 +126,44 @@ const InteractiveDemoSection = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-secondary/20 rounded-lg p-4 font-mono text-sm overflow-hidden">
-                <div className="space-y-2">
-                  <div className="text-primary">// FHEVM Treasure Hunt Contract</div>
-                  <div className="text-muted-foreground">contract TreasureHunt {'{'}</div>
-                  
-                  <div className={`ml-4 transition-all duration-300 ${
+              <div className="bg-secondary/20 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                <div className="space-y-1 text-xs sm:text-sm">
+                  <div className={`transition-all duration-300 ${
                     isPlaying && currentStep >= 2 ? 'bg-primary/20 -mx-2 px-2 py-1 rounded' : ''
                   }`}>
                     <div>
-                      <span className="text-accent">function</span> guess(
+                      <span className="text-accent">function</span> <span className="text-foreground">guess</span>(
                     </div>
-                    <div className="ml-4 text-secondary-foreground">euint32 encryptedX,</div>
-                    <div className="ml-4 text-secondary-foreground">euint32 encryptedY</div>
-                    <div>
-                      ) <span className="text-accent">external</span> {'{'}
-                    </div>
+                    <div className="ml-4 text-secondary-foreground">externalEuint8 inputX, ...</div>
+                    <div>) <span className="text-accent">external</span> {'{'}</div>
                   </div>
-                  
-                  <div className={`ml-8 transition-all duration-300 ${
+
+                  <div className={`ml-4 transition-all duration-300 ${
                     isPlaying && currentStep >= 3 ? 'bg-primary/20 -mx-2 px-2 py-1 rounded' : ''
                   }`}>
-                    <div className="text-muted-foreground">// Calculate distance to treasure</div>
-                    <div className="text-secondary-foreground">euint32 dx = encryptedX.sub(treasureX);</div>
-                    <div className="text-secondary-foreground">euint32 dy = encryptedY.sub(treasureY);</div>
-                    <div className="text-secondary-foreground">euint32 distance = dx.mul(dx).add(dy.mul(dy));</div>
+                    <div className="text-muted-foreground">// Convert encrypted input</div>
+                    <div className="text-secondary-foreground">euint8 guessX = FHE.rem(</div>
+                    <div className="ml-4 text-secondary-foreground">FHE.fromExternal(inputX, attestation),</div>
+                    <div className="ml-4 text-secondary-foreground">8);</div>
                   </div>
-                  
-                  <div className={`ml-8 transition-all duration-300 ${
+
+                  <div className={`ml-4 transition-all duration-300 ${
+                    isPlaying && currentStep >= 3 ? 'bg-primary/20 -mx-2 px-2 py-1 rounded' : ''
+                  }`}>
+                    <div className="text-muted-foreground">// Calculate absolute difference</div>
+                    <div className="text-secondary-foreground">euint8 distX = FHE.select(</div>
+                    <div className="ml-4 text-secondary-foreground">FHE.gt(guessX, secretX),</div>
+                    <div className="ml-4 text-secondary-foreground">FHE.sub(guessX, secretX),</div>
+                    <div className="ml-4 text-secondary-foreground">FHE.sub(secretX, guessX));</div>
+                  </div>
+
+                  <div className={`ml-4 transition-all duration-300 ${
                     isPlaying && currentStep >= 4 ? 'bg-accent/20 -mx-2 px-2 py-1 rounded' : ''
                   }`}>
-                    <div className="text-muted-foreground">// Return hint information</div>
-                    <div>
-                      <span className="text-accent">return</span> getHint(distance);
-                    </div>
+                    <div className="text-muted-foreground">// Same for Y, then store result</div>
+                    <div className="text-secondary-foreground">FHE.allow(distance, msg.sender);</div>
                   </div>
-                  
-                  <div className="ml-4 text-muted-foreground">{'}'}</div>
+
                   <div className="text-muted-foreground">{'}'}</div>
                 </div>
               </div>
@@ -171,15 +172,15 @@ const InteractiveDemoSection = () => {
               <div className="mt-4 space-y-2 text-xs">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-primary rounded-full" />
-                  <span className="text-secondary-foreground">Encrypted data types (euint32)</span>
+                  <span className="text-secondary-foreground">Encrypted data types (euint8, externalEuint8)</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-accent rounded-full" />
-                  <span className="text-secondary-foreground">Homomorphic operations (.sub, .mul, .add)</span>
+                  <span className="text-secondary-foreground">FHE operations (select, sub, add, rem)</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-muted-foreground rounded-full" />
-                  <span className="text-secondary-foreground">Privacy-preserving computation</span>
+                  <span className="text-secondary-foreground">Privacy-preserving distance calculation</span>
                 </div>
               </div>
             </CardContent>

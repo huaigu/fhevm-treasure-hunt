@@ -105,6 +105,10 @@ All colors MUST be HSL. Light theme with yellow/gold accents matching Zama docs.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: auto; /* Ensure instant scroll on navigation, disable smooth scrolling */
+  }
+
   body {
     @apply bg-background text-foreground font-inter;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';

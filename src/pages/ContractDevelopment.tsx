@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -12,6 +12,13 @@ const ContractDevelopment = () => {
     { id: "coding", title: "Write Contract Code" },
     { id: "deployment", title: "Deploy to Testnet" }
   ];
+
+  // Ensure page starts at top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -326,75 +333,182 @@ contract TreasureHunt is Ownable { // Inherit Ownable
                   <div>
                     <h3 className="text-xl font-semibold mb-4">2. Create Treasure with On-chain Random Numbers</h3>
                     <p className="text-secondary-foreground mb-4">
-                      Next, write a function that can only be called by the owner, using FHE.randEuint8() to generate secret coordinates.
+                      Next, write a function that can only be called by the owner, using <code className="bg-muted px-2 py-1 rounded text-sm">FHE.randEuint8()</code> to generate fully random encrypted coordinates, then using <code className="bg-muted px-2 py-1 rounded text-sm">FHE.rem()</code> to constrain them within the game map range (0-7).
                     </p>
-                    
-                    <div className="bg-muted/50 rounded-lg p-4 border border-border">
+
+                    <div className="bg-muted/50 rounded-lg p-4 border border-border mb-4">
                       <pre className="text-sm font-mono text-foreground overflow-x-auto">
                         <code>{`    function createTreasure() external onlyOwner {
         require(!isTreasureSet, "Treasure is already set!");
-        
-        // Safely generate random number seed using on-chain variables
-        uint256 randSeed = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender)));
 
-        // Use seed to generate encrypted random numbers as coordinates
-        secretX = FHE.randEuint8(randSeed);
-        secretY = FHE.randEuint8(randSeed + 1); // Second random number uses different seed to increase randomness
-        
+        // Generate full-domain random and reduce to 0..7 so it's in same domain as later computations
+        // randEuint8() -> full-domain euint8; rem expects plaintext divisor
+        secretX = FHE.rem(FHE.randEuint8(), 8);
+        secretY = FHE.rem(FHE.randEuint8(), 8);
+
+        // Grant the contract itself permission to access these encrypted coordinates (for later calculations)
+        FHE.allow(secretX, address(this));
+        FHE.allow(secretY, address(this));
+
         isTreasureSet = true;
+        emit TreasureCreated();
     }`}</code>
                       </pre>
                     </div>
+
+                    <Alert className="bg-primary/5 border-primary/20">
+                      <Lightbulb className="h-4 w-4 text-primary" />
+                      <AlertDescription className="text-secondary-foreground">
+                        <strong>💡 Key Technical Points:</strong><br />
+                        <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+                          <li><code className="bg-muted px-1 rounded">FHE.randEuint8()</code> generates a fully random encrypted number (0-255)</li>
+                          <li><code className="bg-muted px-1 rounded">FHE.rem(value, 8)</code> takes modulo on encrypted data, ensuring the result is in 0-7 range</li>
+                          <li><code className="bg-muted px-1 rounded">FHE.allow(data, address(this))</code> grants the contract permission to use these encrypted values later</li>
+                        </ul>
+                      </AlertDescription>
+                    </Alert>
                   </div>
 
                   {/* Code Step 3 */}
                   <div>
                     <h3 className="text-xl font-semibold mb-4">3. Write the Core guess Function</h3>
                     <p className="text-secondary-foreground mb-4">
-                      This is the soul of the game. It receives the player's encrypted guess, calculates the Manhattan distance (|x1-x2| + |y1-y2|), grants decryption permission, and stores the result.
+                      This is the soul of the game. It receives the player's encrypted guess from the frontend, calculates the Manhattan distance (|x1-x2| + |y1-y2|), grants decryption permission, and stores the result.
                     </p>
-                    
+
                     <Alert className="bg-primary/5 border-primary/20 mb-4">
                       <Lightbulb className="h-4 w-4 text-primary" />
                       <AlertDescription className="text-secondary-foreground">
-                        💡 Tip: In FHEVM, calculating the absolute value |a-b| of encrypted numbers has a trick: calculate max(a-b, b-a).
+                        <strong>💡 FHEVM Core Techniques:</strong><br />
+                        <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+                          <li><strong>FHE.fromExternal()</strong>: Required to receive encrypted data from frontend + attestation proof</li>
+                          <li><strong>FHE.select()</strong>: Conditional selection on encrypted data, key to implementing encrypted absolute value</li>
+                          <li><strong>Absolute value trick</strong>: Calculate both a-b and b-a, then use select(a&gt;b, a-b, b-a) to choose the correct result</li>
+                        </ul>
                       </AlertDescription>
                     </Alert>
-                    
-                    <div className="bg-muted/50 rounded-lg p-4 border border-border">
+
+                    <div className="bg-muted/50 rounded-lg p-4 border border-border mb-4">
                       <pre className="text-sm font-mono text-foreground overflow-x-auto">
-                        <code>{`    function guess(bytes calldata encryptedX, bytes calldata encryptedY) external {
+                        <code>{`    /// @notice Submit an encrypted guess for the treasure location
+    function guess(externalEuint8 inputX, externalEuint8 inputY, bytes calldata attestation) external {
         require(isTreasureSet, "Treasure has not been set yet!");
-        
-        euint8 guessX = FHE.asEuint8(encryptedX);
-        euint8 guessY = FHE.asEuint8(encryptedY);
 
-        // Use FHE.max and FHE.sub to calculate absolute differences on X and Y axes
-        euint8 distX = FHE.max(FHE.sub(guessX, secretX), FHE.sub(secretX, guessX));
-        euint8 distY = FHE.max(FHE.sub(guessY, secretY), FHE.sub(secretY, guessY));
+        // Convert both inputs using the same attestation
+        // And use rem to constrain to 0..7 range, ensuring same domain as treasure coordinates
+        euint8 guessX = FHE.rem(FHE.fromExternal(inputX, attestation), 8);
+        euint8 guessY = FHE.rem(FHE.fromExternal(inputY, attestation), 8);
 
-        // Use FHE.add to calculate Manhattan distance
+        // X-axis absolute diff: calculate both directions, then select based on comparison
+        euint8 diffX1 = FHE.sub(guessX, secretX);
+        euint8 diffX2 = FHE.sub(secretX, guessX);
+        ebool condX = FHE.gt(guessX, secretX); // true when guessX > secretX
+        euint8 distX = FHE.select(condX, diffX1, diffX2);
+
+        // Y-axis absolute diff (same logic)
+        euint8 diffY1 = FHE.sub(guessY, secretY);
+        euint8 diffY2 = FHE.sub(secretY, guessY);
+        ebool condY = FHE.gt(guessY, secretY);
+        euint8 distY = FHE.select(condY, diffY1, diffY2);
+
+        // Manhattan distance
         euint8 distance = FHE.add(distX, distY);
 
-        // Critical step: Grant msg.sender permission to decrypt this distance value on-chain
-        // Without this line, Relayer will reject the user's off-chain decryption request
+        // Critical step: Grant the caller persistent permission to decrypt/use distance
+        // Also grant the contract itself permission for storage and future use
         FHE.allow(distance, msg.sender);
+        FHE.allow(distance, address(this));
 
-        // Store the encrypted distance with decryption permission in the mapping
+        // Store the encrypted distance handle in the mapping
         userDistances[msg.sender] = distance;
+
+        emit GuessSubmitted(msg.sender);
     }`}</code>
                       </pre>
+                    </div>
+
+                    <div className="grid gap-4 mt-6">
+                      <Card className="bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+                        <CardHeader>
+                          <CardTitle className="text-base text-blue-800 dark:text-blue-200">🔑 Why use FHE.select() instead of FHE.max()?</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-blue-700 dark:text-blue-300">
+                            <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">FHE.select(condition, valueIfTrue, valueIfFalse)</code> is the standard pattern for implementing conditional logic in FHEVM. By first comparing <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">guessX &gt; secretX</code> to get an encrypted boolean, then selecting the correct difference based on this condition, we can calculate absolute value in fully encrypted state.
+                          </p>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="bg-purple-50/50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800">
+                        <CardHeader>
+                          <CardTitle className="text-base text-purple-800 dark:text-purple-200">🔐 FHE.fromExternal() vs FHE.asEuint8()</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-purple-700 dark:text-purple-300 mb-2">
+                            <strong>fromExternal()</strong>: Used to receive encrypted data from the frontend, requires attestation proof to verify data legitimacy.
+                          </p>
+                          <p className="text-sm text-purple-700 dark:text-purple-300">
+                            <strong>asEuint8()</strong>: Used to convert plaintext values to encrypted types within the contract (e.g., <code className="bg-purple-100 dark:bg-purple-900 px-1 rounded">FHE.asEuint8(0)</code>).
+                          </p>
+                        </CardContent>
+                      </Card>
                     </div>
                   </div>
 
                   {/* Code Step 4 */}
                   <div>
-                    <h3 className="text-xl font-semibold mb-4">4. Leave Clues for the Frontend</h3>
+                    <h3 className="text-xl font-semibold mb-4">4. Helper Functions: Making the Contract More User-Friendly</h3>
                     <p className="text-secondary-foreground mb-4">
-                      The contract is complete! But how does the frontend read the encrypted data in userDistances? It's simple: because we declared it as public, Solidity will automatically create a userDistances(address) getter function for us.
+                      To make frontend interaction more convenient, we've added several useful helper functions. Since we declared <code className="bg-muted px-2 py-1 rounded text-sm">userDistances</code> as public, Solidity automatically creates a getter function for us.
                     </p>
-                    <p className="text-secondary-foreground">
-                      In the next chapter, the first step for our frontend will be to call this function to retrieve the encrypted distance, then pass it to the Relayer for decryption!
+
+                    <div className="space-y-4">
+                      <Card className="bg-muted/30 border-border">
+                        <CardContent className="pt-4">
+                          <div className="flex items-start gap-3">
+                            <Database className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold mb-2"><code className="bg-muted px-2 py-1 rounded text-sm">getMyDistance()</code></p>
+                              <p className="text-sm text-secondary-foreground">Returns the caller's most recent encrypted guess distance. The frontend will call this function to retrieve the encrypted result, then pass it to the Relayer for decryption.</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="bg-muted/30 border-border">
+                        <CardContent className="pt-4">
+                          <div className="flex items-start gap-3">
+                            <CheckCircle className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold mb-2"><code className="bg-muted px-2 py-1 rounded text-sm">isTreasureReady()</code></p>
+                              <p className="text-sm text-secondary-foreground">Checks if the game has been initialized (whether the owner has created the treasure). The frontend can use it to display game status.</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="bg-muted/30 border-border">
+                        <CardContent className="pt-4">
+                          <div className="flex items-start gap-3">
+                            <Globe className="h-5 w-5 text-accent mt-1 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold mb-2"><code className="bg-muted px-2 py-1 rounded text-sm">resetGame()</code> and <code className="bg-muted px-2 py-1 rounded text-sm">getTreasureLocation()</code></p>
+                              <p className="text-sm text-secondary-foreground">Owner-only functions. Used to reset the game or debug by viewing treasure coordinates (getTreasureLocation can be removed for production deployment).</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Alert className="bg-accent/5 border-accent/20 mt-6">
+                      <Lightbulb className="h-4 w-4 text-accent" />
+                      <AlertDescription className="text-secondary-foreground">
+                        <strong>💡 Tip:</strong> The contract also includes a <code className="bg-muted px-1 rounded">guessSimple()</code> function that simply adds two coordinates together without calculating distance. This is a simplified version for testing frontend encryption integration and can be removed for production.
+                      </AlertDescription>
+                    </Alert>
+
+                    <p className="text-secondary-foreground mt-6">
+                      The complete contract code is ready! In the next chapter, our frontend will call <code className="bg-muted px-2 py-1 rounded text-sm">getMyDistance()</code> to retrieve the encrypted distance, then securely decrypt it through the Relayer!
                     </p>
                   </div>
                 </CardContent>

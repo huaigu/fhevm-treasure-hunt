@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Terminal, Package, FolderTree, Server, Wallet, CheckCircle, ArrowLeft, Lightbulb, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Link } from "react-router-dom";
 
 const EnvironmentSetup = () => {
+  // Ensure page starts at top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
   const steps = [
     {
       icon: Terminal,
