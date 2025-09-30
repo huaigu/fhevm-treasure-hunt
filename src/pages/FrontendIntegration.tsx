@@ -745,6 +745,85 @@ const decryptDistance = useCallback(async () => {
                     </p>
                   </CardContent>
                 </Card>
+
+                {/* Take It Further Card */}
+                <Card className="border-accent/30 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent">
+                  <CardContent className="py-8">
+                    <div className="max-w-3xl mx-auto space-y-6">
+                      <div className="text-center">
+                        <h3 className="text-2xl font-bold mb-3">🚀 Take It Further!</h3>
+                        <p className="text-muted-foreground">
+                          This treasure hunt is just the beginning. You can enhance it into a full-featured game with exciting new capabilities:
+                        </p>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4 text-left">
+                        <div className="bg-card rounded-lg p-4 border border-border">
+                          <h4 className="font-semibold text-accent mb-2">🎮 Game Enhancements</h4>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            <li>• Multiple difficulty levels with larger grids</li>
+                            <li>• Time-based challenges and scoring system</li>
+                            <li>• Multi-player competition mode</li>
+                            <li>• Treasure hints using encrypted clues</li>
+                          </ul>
+                        </div>
+
+                        <div className="bg-card rounded-lg p-4 border border-border">
+                          <h4 className="font-semibold text-accent mb-2">🔐 FHE Features</h4>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            <li>• Encrypted player stats and leaderboards</li>
+                            <li>• Private betting or wagering system</li>
+                            <li>• Secret power-ups and special abilities</li>
+                            <li>• Hidden treasure values and rewards</li>
+                          </ul>
+                        </div>
+
+                        <div className="bg-card rounded-lg p-4 border border-border">
+                          <h4 className="font-semibold text-accent mb-2">💎 Blockchain Integration</h4>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            <li>• NFT rewards for treasure finders</li>
+                            <li>• Token-based entry fees and prizes</li>
+                            <li>• On-chain achievement system</li>
+                            <li>• Cross-chain treasure hunts</li>
+                          </ul>
+                        </div>
+
+                        <div className="bg-card rounded-lg p-4 border border-border">
+                          <h4 className="font-semibold text-accent mb-2">🎨 UX Improvements</h4>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            <li>• Animated treasure discovery effects</li>
+                            <li>• Sound effects and background music</li>
+                            <li>• Mobile-responsive game interface</li>
+                            <li>• Social sharing and invitations</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="text-center pt-4">
+                        <p className="text-lg font-semibold text-foreground mb-4">
+                          Ready to build your own encrypted gaming experience?
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                          <a
+                            href="https://github.com/huaigu/treasure-hunt-demo"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                          >
+                            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                            </svg>
+                            Clone the Repository
+                            <ArrowRight className="h-5 w-5" />
+                          </a>
+                          <p className="text-sm text-muted-foreground">
+                            Fork it, customize it, and make it your own!
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </section>
           </div>
