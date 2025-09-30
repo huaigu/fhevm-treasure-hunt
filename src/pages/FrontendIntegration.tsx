@@ -598,9 +598,39 @@ const decryptDistance = useCallback(async () => {
                 </CardContent>
               </Card>
 
-              <div className="mt-12 text-center">
+              <div className="mt-12 space-y-6">
+                {/* Live Demo Card */}
+                <Card className="border-primary/50 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent">
+                  <CardContent className="py-8 text-center">
+                    <div className="flex justify-center mb-4">
+                      <div className="bg-primary/20 p-3 rounded-full">
+                        <GamepadIcon className="h-8 w-8 text-primary" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">🎮 Try the Live Demo!</h3>
+                    <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                      Experience the complete treasure hunt game deployed on Sepolia testnet.
+                      Connect your wallet and start hunting for the hidden treasure!
+                    </p>
+                    <a
+                      href="https://treasure-hunt-demo.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      <Monitor className="h-5 w-5" />
+                      Launch Live Demo
+                      <ArrowRight className="h-5 w-5" />
+                    </a>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      🔗 https://treasure-hunt-demo.vercel.app/
+                    </p>
+                  </CardContent>
+                </Card>
+
+                {/* Congratulations Card */}
                 <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
-                  <CardContent className="py-8">
+                  <CardContent className="py-8 text-center">
                     <h3 className="text-2xl font-bold mb-4">🎉 Congratulations on completing the entire journey!</h3>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
                       You have mastered the core technologies of FHEVM, from environment setup to smart contract development, and frontend integration, building a complete confidential DApp.
