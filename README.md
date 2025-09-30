@@ -1,73 +1,174 @@
-# Welcome to your Lovable project
+# FHEVM Treasure Hunt - Interactive Tutorial
 
-## Project info
+Learn FHEVM by Building a Confidential Treasure Hunt Game
 
-**URL**: https://lovable.dev/projects/64f36e6d-76ae-487a-98a3-16906a8046c6
+> An interactive educational website teaching Fully Homomorphic Encryption (FHE) smart contract development through a hands-on treasure hunt game. Created for the Zama S10 Bounty program.
 
-## How can I edit this code?
+## 🎯 Project Overview
 
-There are several ways of editing your application.
+This project consists of:
+- **Tutorial Website**: Step-by-step interactive guide for learning FHEVM
+- **Demo DApp** (submodule): Complete working implementation of the treasure hunt game
 
-**Use Lovable**
+## 📁 Project Structure
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/64f36e6d-76ae-487a-98a3-16906a8046c6) and start prompting.
+```
+fhevm-treasure-hunt/           # Main project: Tutorial website
+├── src/                        # Website source code
+│   ├── components/            # React components
+│   │   ├── HeroSection.tsx
+│   │   ├── LearningPathSection.tsx
+│   │   ├── InteractiveDemoSection.tsx
+│   │   └── ...
+│   ├── pages/                 # Tutorial pages
+│   │   ├── EnvironmentSetup.tsx
+│   │   ├── ContractDevelopment.tsx
+│   │   └── FrontendIntegration.tsx
+│   └── ...
+├── treasure-hunt-demo/        # Git Submodule: Complete FHEVM DApp
+│   ├── packages/
+│   │   ├── contracts/        # Solidity smart contracts (TreasureHunt.sol)
+│   │   └── sites/            # DApp frontend (React)
+│   └── README.md             # Demo project documentation
+└── README.md                  # This file
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+## ✨ Features
 
-**Use your preferred IDE**
+- 📚 **Three-Part Tutorial**: Environment Setup → Contract Development → Frontend Integration
+- 🎮 **Interactive Demos**: Animated code examples and visual walkthroughs
+- 💻 **Real Working Code**: Complete DApp implementation via git submodule
+- 🎨 **Zama-Inspired Design**: Professional design system matching Zama documentation
+- 📱 **Responsive**: Works seamlessly on desktop, tablet, and mobile
+- 🔐 **Learn by Doing**: Practical FHE concepts through a real-world game
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🛠 Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Tutorial Website
+- **Frontend**: React 18, TypeScript, Vite
+- **UI Framework**: shadcn/ui, TailwindCSS
+- **Routing**: React Router v6
+- **Analytics**: Vercel Analytics
+- **Deployment**: Vercel
 
-Follow these steps:
+### Demo DApp (Submodule)
+- **Smart Contracts**: Solidity ^0.8.24, FHEVM SDK
+- **Development**: Hardhat
+- **Frontend**: React, fhevm-react hooks
+- **Network**: Sepolia Testnet / Local Hardhat
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🚀 Quick Start
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 1. Clone the Repository (with submodule)
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+git clone --recurse-submodules https://github.com/huaigu/fhevm-treasure-hunt
+cd fhevm-treasure-hunt
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+**If you already cloned without submodules:**
+```bash
+git submodule update --init --recursive
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Run Development Server
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The tutorial website will be available at **http://localhost:5173**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### 4. Build for Production
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+npm run preview  # Preview the production build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📦 Working with the Demo Submodule
 
-## What technologies are used for this project?
+The complete treasure hunt DApp referenced in the tutorials is located in the `treasure-hunt-demo/` directory.
 
-This project is built with:
+### Navigate to the demo project:
+```bash
+cd treasure-hunt-demo
+npm install
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Follow demo-specific instructions:
+See `treasure-hunt-demo/README.md` for:
+- Running local Hardhat network
+- Deploying contracts
+- Starting the DApp frontend
+- Testing the game
 
-## How can I deploy this project?
+### Update submodule to latest version:
+```bash
+git submodule update --remote treasure-hunt-demo
+```
 
-Simply open [Lovable](https://lovable.dev/projects/64f36e6d-76ae-487a-98a3-16906a8046c6) and click on Share -> Publish.
+## 📖 Tutorial Content
 
-## Can I connect a custom domain to my Lovable project?
+### Part 1: Environment Setup
+- Clone official FHEVM template
+- Install dependencies and understand project structure
+- Start local blockchain with Hardhat
+- Configure MetaMask wallet
 
-Yes, you can!
+### Part 2: Contract Development
+- **Core Concepts**: Encrypted data types (`euint8`, `externalEuint8`)
+- **FHE Operations**: `FHE.rem()`, `FHE.select()`, `FHE.fromExternal()`
+- **Game Logic**: Random treasure generation, distance calculation
+- **Deploy**: Deploy to Sepolia testnet
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Part 3: Frontend Integration
+- Connect wallet and contract
+- Initialize FHEVM instance
+- Encrypt user inputs
+- Submit encrypted guesses
+- Decrypt results using Relayer
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🔗 Project Links
+
+- **Tutorial Website**: [Add deployed URL here]
+- **GitHub Repository**: https://github.com/huaigu/fhevm-treasure-hunt
+- **Demo Repository**: https://github.com/huaigu/treasure-hunt-demo
+- **Zama FHEVM Docs**: https://docs.zama.ai/fhevm
+- **Zama Website**: https://www.zama.ai
+
+## 🎓 Learning Objectives
+
+By completing this tutorial, you will learn:
+- ✅ Set up an FHEVM development environment
+- ✅ Write smart contracts with encrypted data types
+- ✅ Perform homomorphic operations (add, sub, select)
+- ✅ Handle encrypted inputs from frontend with attestations
+- ✅ Implement access control with `FHE.allow()`
+- ✅ Build React frontend with fhevm-react hooks
+- ✅ Encrypt data on client-side and decrypt results
+- ✅ Deploy confidential DApps to testnet
+
+## 🤝 Contributing
+
+This project was created for the **Zama S10 Bounty** program. Contributions, issues, and feature requests are welcome!
+
+## 📄 License
+
+MIT License
+
+## 🙏 Acknowledgments
+
+- Built with guidance from [Zama's FHEVM documentation](https://docs.zama.ai/fhevm)
+- Uses [fhevm-react-template](https://github.com/zama-ai/fhevm-react-template) as foundation
+- Design inspired by Zama's official website and documentation
+
+---
+
+**Start your FHEVM journey today!** Visit the tutorial website or dive into the code in `treasure-hunt-demo/`.
