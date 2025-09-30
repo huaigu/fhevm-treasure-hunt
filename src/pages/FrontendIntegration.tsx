@@ -214,17 +214,23 @@ useEffect(() => {
               <Card className="mb-6">
                 <CardContent className="pt-6">
                   <p className="text-muted-foreground mb-4">
-                    This is the most critical step for interacting with FHEVM. We need to create an fhevm instance that will handle all encryption and decryption operations.
+                    This is the most critical step for interacting with FHEVM. The FHEVM instance handles all encryption and decryption operations through the Zama Relayer SDK.
                   </p>
-                  
+
                   <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">
                     <div className="flex items-start gap-3">
                       <span className="text-lg">✨</span>
                       <div>
-                        <p className="font-medium text-primary">Best Practice</p>
-                        <p className="text-sm text-primary/80">
-                          We'll use Zama's official <code className="px-1 py-0.5 bg-primary/20 rounded">@fhevm/react</code> library with the useFhevm hook, which provides automatic FHEVM instance management, error handling, and proper cleanup.
+                        <p className="font-medium text-primary">Relayer SDK Architecture</p>
+                        <p className="text-sm text-primary/80 mb-2">
+                          The useFhevm hook automatically loads the Zama Relayer SDK from CDN and initializes it with Sepolia network configuration. The SDK provides:
                         </p>
+                        <ul className="text-sm text-primary/80 list-disc list-inside space-y-1">
+                          <li>Automatic SDK loading and initialization</li>
+                          <li>Public key management and caching</li>
+                          <li>Network-specific configurations (ACL, InputVerifier addresses)</li>
+                          <li>Seamless encryption/decryption APIs</li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -240,27 +246,29 @@ useEffect(() => {
 // ...
 const [chainId, setChainId] = useState();
 
-// FHEVM instance with automatic management
+// FHEVM instance with automatic Relayer SDK management
 const {
   instance: fhevmInstance,
   status: fhevmStatus,
   error: fhevmError,
 } = useFhevm({
-  provider,
-  chainId,
+  provider,                  // EIP-1193 provider (MetaMask)
+  chainId,                   // Current network chain ID
   enabled: isConnected && chainId === 11155111, // Enable only for Sepolia
 });
 
-// Usage in your component:
-// - fhevmInstance: Ready-to-use FHEVM instance
-// - fhevmStatus: "connecting", "connected", "error", etc.
-// - fhevmError: Any initialization errors
+// Status lifecycle:
+// 1. "idle" - Initial state
+// 2. "loading" - SDK loading from CDN (https://cdn.jsdelivr.net/npm/@zama-fhe/relayer-sdk)
+// 3. "ready" - SDK initialized, instance created with SepoliaConfig
+// 4. "error" - Initialization failed
 
 // The hook automatically:
-// 1. Creates FHEVM instance from provider
-// 2. Handles network changes and reconnections
-// 3. Manages public key generation and signatures
-// 4. Provides proper cleanup on unmount`}</code>
+// - Loads Relayer SDK script from CDN if not already loaded
+// - Initializes SDK with network-specific configuration
+// - Creates FHEVM instance with ACL and InputVerifier addresses
+// - Fetches and caches public keys from ACL contract
+// - Provides proper cleanup on unmount or network change`}</code>
                     </pre>
                   </div>
                 </CardContent>
@@ -379,8 +387,30 @@ const handleCreateTreasure = async () => {
               </div>
 
               <p className="text-muted-foreground mb-6">
-                This is the core interaction of the game! We will step-by-step implement the "encrypt → submit → retrieve → decrypt" workflow using custom hooks for better organization and reusability.
+                This is the core interaction of the game! We will step-by-step implement the "encrypt → submit → retrieve → decrypt" workflow using the new Relayer SDK encryption APIs.
               </p>
+
+              <Card className="mb-6">
+                <CardContent className="pt-6">
+                  <div className="bg-primary/10 border-l-4 border-primary p-4 rounded">
+                    <div className="flex items-start gap-3">
+                      <span className="text-lg">🔐</span>
+                      <div>
+                        <p className="font-medium text-primary mb-2">New Encryption API Pattern</p>
+                        <p className="text-sm text-primary/80 mb-2">
+                          The Relayer SDK introduces <code className="px-1 py-0.5 bg-primary/20 rounded">createEncryptedInput()</code> for batching multiple encrypted values:
+                        </p>
+                        <ul className="text-sm text-primary/80 list-disc list-inside space-y-1">
+                          <li><strong>Single Attestation:</strong> One proof for multiple encrypted values (more efficient)</li>
+                          <li><strong>Batch Processing:</strong> Chain multiple .add8(), .add16(), etc. calls</li>
+                          <li><strong>Handles Array:</strong> Returns encrypted handles in order</li>
+                          <li><strong>Contract Signature:</strong> guess(externalEuint8 x, externalEuint8 y, bytes attestation)</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               <div className="space-y-6">
                 <Card>
@@ -394,6 +424,7 @@ const handleCreateTreasure = async () => {
 import { useInMemoryStorage } from "../hooks/useInMemoryStorage";
 
 // Initialize storage for FHEVM decryption signatures
+// This stores signatures to avoid re-signing on every decryption
 const { storage: fhevmDecryptionSignatureStorage } = useInMemoryStorage();
 
 // Use the treasure hunt hook with all necessary dependencies
@@ -468,46 +499,106 @@ const makeGuess = async () => {
                         <code>{`// Inside useTreasureHunt hook - the encryption and submission logic:
 
 const makeGuess = useCallback(async (x: number, y: number) => {
-  if (!instance || !ethersSigner || !contract) return;
+  if (!contractWithSigner || !instance || !canMakeGuess) return;
 
   setIsMakingGuess(true);
-  try {
-    // Step 1: Encrypt coordinates using FHEVM instance
-    const encryptedX = await instance.createEncryptedValue(x, "uint8");
-    const encryptedY = await instance.createEncryptedValue(y, "uint8");
+  setMessage(\`Making guess at position (\${x}, \${y})...\`);
 
-    // Step 2: Submit encrypted guess to contract
-    const tx = await contract.guess(encryptedX, encryptedY);
+  try {
+    // Step 1: Get user address for encryption context
+    const signerAddress = await ethersSigner.getAddress();
+
+    // Step 2: Create a SINGLE encrypted input with BOTH coordinates
+    // This generates ONE attestation/proof for both values
+    const encryptedInput = await instance
+      .createEncryptedInput(contractAddress, signerAddress)
+      .add8(x)  // Add first coordinate (euint8)
+      .add8(y)  // Add second coordinate (euint8)
+      .encrypt(); // Generate proof and handles
+
+    // encryptedInput contains:
+    // - handles[0]: encrypted X handle
+    // - handles[1]: encrypted Y handle
+    // - inputProof: shared attestation for both values
+
+    console.log('Encrypted handles:', encryptedInput.handles);
+    setMessage("Submitting encrypted guess...");
+
+    // Step 3: Submit to contract with handles and shared proof
+    const tx = await contractWithSigner.guess(
+      encryptedInput.handles[0],  // externalEuint8 inputX
+      encryptedInput.handles[1],  // externalEuint8 inputY
+      encryptedInput.inputProof   // bytes attestation
+    );
+
+    setMessage("Transaction submitted, waiting for confirmation...");
     await tx.wait();
 
-    // Step 3: Read encrypted distance from contract
+    // Step 4: Read encrypted distance from contract
     const userAddress = await ethersSigner.getAddress();
     const encryptedDistance = await readOnlyContract.userDistances(userAddress);
     setEncryptedDistance(encryptedDistance);
 
-    setMessage(\`Guess submitted! Distance encrypted. Click "Decrypt Distance" to see result.\`);
+    setMessage("Guess submitted successfully! Click 'Decrypt Distance' to see the result.");
   } catch (error) {
     console.error("Error making guess:", error);
     setMessage("Error making guess. Please try again.");
   } finally {
     setIsMakingGuess(false);
   }
-}, [instance, ethersSigner, contract]);
+}, [instance, ethersSigner, contractWithSigner]);
 
-// Separate decryption function with signature storage
+// Separate decryption function with signature-based authentication
 const decryptDistance = useCallback(async () => {
-  if (!instance || !contractAddress || !encryptedDistance) return;
+  if (!instance || !encryptedDistance || !canDecrypt) return;
 
   setIsDecrypting(true);
+  setMessage("Decrypting distance...");
+
   try {
-    const distance = await instance.decrypt(contractAddress, encryptedDistance);
-    setDecryptedDistance(Number(distance));
+    // Step 1: Load or create decryption signature for this contract
+    // This signature grants permission to decrypt values from the contract
+    const sig: FhevmDecryptionSignature | null = await FhevmDecryptionSignature.loadOrSign(
+      instance,
+      [contractAddress as \`0x\${string}\`],
+      ethersSigner,
+      fhevmDecryptionSignatureStorage
+    );
+
+    if (!sig) {
+      setMessage("Unable to build FHEVM decryption signature");
+      return;
+    }
+
+    setMessage("Call FHEVM userDecrypt...");
+
+    // Step 2: Decrypt the value using the signature
+    const res = await instance.userDecrypt(
+      [{ handle: encryptedDistance, contractAddress: contractAddress }],
+      sig.privateKey,
+      sig.publicKey,
+      sig.signature,
+      sig.contractAddresses,
+      sig.userAddress,
+      sig.startTimestamp,
+      sig.durationDays
+    );
+
+    const decrypted = Number(res[encryptedDistance]);
+    setDecryptedDistance(decrypted);
     setIsDecrypted(true);
 
-    if (distance === 0) {
-      setMessage("🎉 Congratulations! You found the treasure!");
+    setMessage("FHEVM userDecrypt completed!");
+
+    // Provide feedback based on distance
+    if (decrypted === 0) {
+      setMessage("🎉 CONGRATULATIONS! You found the treasure!");
+    } else if (decrypted <= 2) {
+      setMessage(\`🔥 Very close! Distance: \${decrypted}\`);
+    } else if (decrypted <= 5) {
+      setMessage(\`🌡️ Getting warmer... Distance: \${decrypted}\`);
     } else {
-      setMessage(\`Distance to treasure: \${distance}\`);
+      setMessage(\`❄️ Cold! Distance: \${decrypted}\`);
     }
   } catch (error) {
     console.error("Error decrypting:", error);
@@ -515,7 +606,7 @@ const decryptDistance = useCallback(async () => {
   } finally {
     setIsDecrypting(false);
   }
-}, [instance, contractAddress, encryptedDistance]);`}</code>
+}, [instance, contractAddress, encryptedDistance, fhevmDecryptionSignatureStorage]);`}</code>
                       </pre>
                     </div>
                   </CardContent>
