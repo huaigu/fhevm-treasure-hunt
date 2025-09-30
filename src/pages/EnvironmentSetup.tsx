@@ -6,6 +6,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Link } from "react-router-dom";
 
 const EnvironmentSetup = () => {
+  const navigationItems = [
+    { id: "step-1", title: "Step 1: Official Template" },
+    { id: "step-2", title: "Step 2: Install Dependencies" },
+    { id: "step-3", title: "Step 3: Project Structure" },
+    { id: "step-4", title: "Step 4: Start Blockchain" },
+    { id: "step-5", title: "Step 5: Connect Wallet" },
+  ];
+
   // Ensure page starts at top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -15,12 +23,14 @@ const EnvironmentSetup = () => {
 
   const steps = [
     {
+      id: "step-1",
       icon: Terminal,
       title: "Step 1: Start with Official Template",
       description: "Zama provides an official React-based FHEVM template, which is the best starting point. Open your terminal and execute the following commands to clone it:",
       code: "git clone https://github.com/zama-ai/fhevm-react-template.git confidential-treasure-hunt\ncd confidential-treasure-hunt"
     },
     {
+      id: "step-2",
       icon: Package,
       title: "Step 2: Install Dependencies",
       description: "This template project uses Yarn as the package manager. In the project root directory, execute the following command to install all required building blocks:",
@@ -28,12 +38,14 @@ const EnvironmentSetup = () => {
       tip: "💡 If you don't have Yarn installed, you can install it globally with npm install -g yarn."
     },
     {
+      id: "step-3",
       icon: FolderTree,
       title: "Step 3: Understanding Our Toolkit",
       description: "This project is a Monorepo (single repository), meaning both frontend and backend code are in one repository for easy management. We only need to focus on these two folders under the packages directory:",
       code: "/\n├── packages/\n│   ├── contracts/   # Our smart contracts (Solidity)\n│   └── sites/       # Our frontend website (React)\n└── package.json     # Project root configuration file"
     },
     {
+      id: "step-4",
       icon: Server,
       title: "Step 4: Start Your Private Blockchain",
       description: "The template has already configured all commands for us. In the project **root directory**, execute the following command to start the local Hardhat test network:",
@@ -41,6 +53,7 @@ const EnvironmentSetup = () => {
       warning: "⚠️ Keep this terminal window open! The network must keep running to test contracts."
     },
     {
+      id: "step-5",
       icon: Wallet,
       title: "Step 5: Connect MetaMask Wallet",
       description: "Now we need to connect MetaMask wallet to the local test network. Please configure according to the following steps:",
@@ -68,63 +81,86 @@ const EnvironmentSetup = () => {
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">
-            <span className="gradient-text">Environment Setup</span> Guide
-          </h1>
-          <p className="text-lg text-secondary-foreground max-w-2xl mx-auto">
-            Let's configure the development environment step by step to prepare for building your first confidential DApp
-          </p>
-        </div>
+      <div className="flex">
+        {/* Left Navigation Sidebar */}
+        <aside className="hidden md:block w-64 bg-background border-r border-border sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="p-6">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+              Page Navigation
+            </h3>
+            <nav className="space-y-2">
+              {navigationItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors"
+                >
+                  {item.title}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
 
-        {/* Steps */}
-        <div className="space-y-8">
-          {steps.map((step, index) => (
-            <Card key={index} className="feature-card bg-card/80 backdrop-blur-sm">
-              <CardHeader>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center glow-primary">
-                    <step.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">{step.title}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-secondary-foreground leading-relaxed">
-                  {step.description}
-                </p>
-                
-                {step.code && (
-                  <div className="bg-muted/50 rounded-lg p-4 border border-border">
-                    <pre className="text-sm font-mono text-foreground overflow-x-auto">
-                      <code>{step.code}</code>
-                    </pre>
-                  </div>
-                )}
+        {/* Main Content */}
+        <main className="flex-1">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold mb-4">
+                <span className="gradient-text">Environment Setup</span> Guide
+              </h1>
+              <p className="text-lg text-secondary-foreground max-w-2xl mx-auto">
+                Let's configure the development environment step by step to prepare for building your first confidential DApp
+              </p>
+            </div>
 
-                {step.tip && (
-                  <Alert className="bg-primary/5 border-primary/20">
-                    <Lightbulb className="h-4 w-4 text-primary" />
-                    <AlertDescription className="text-secondary-foreground">
-                      {step.tip}
-                    </AlertDescription>
-                  </Alert>
-                )}
+            {/* Steps */}
+            <div className="space-y-8">
+              {steps.map((step, index) => (
+                <Card key={index} id={step.id} className="feature-card bg-card/80 backdrop-blur-sm scroll-mt-20">
+                  <CardHeader>
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center glow-primary">
+                        <step.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <CardTitle className="text-xl">{step.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-secondary-foreground leading-relaxed">
+                      {step.description}
+                    </p>
 
-                {step.warning && (
-                  <Alert className="bg-destructive/5 border-destructive/20">
-                    <AlertTriangle className="h-4 w-4 text-destructive" />
-                    <AlertDescription className="text-secondary-foreground">
-                      {step.warning}
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    {step.code && (
+                      <div className="bg-muted/50 rounded-lg p-4 border border-border">
+                        <pre className="text-sm font-mono text-foreground overflow-x-auto">
+                          <code>{step.code}</code>
+                        </pre>
+                      </div>
+                    )}
+
+                    {step.tip && (
+                      <Alert className="bg-primary/5 border-primary/20">
+                        <Lightbulb className="h-4 w-4 text-primary" />
+                        <AlertDescription className="text-secondary-foreground">
+                          {step.tip}
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
+                    {step.warning && (
+                      <Alert className="bg-destructive/5 border-destructive/20">
+                        <AlertTriangle className="h-4 w-4 text-destructive" />
+                        <AlertDescription className="text-secondary-foreground">
+                          {step.warning}
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
         {/* React Beginner Section */}
         <Card className="feature-card bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20 mt-8">
@@ -149,23 +185,25 @@ const EnvironmentSetup = () => {
           </CardContent>
         </Card>
 
-        {/* Completion Section */}
-        <Card className="feature-card bg-gradient-to-r from-green-500/10 to-primary/10 border-green-500/20 mt-8">
-          <CardContent className="text-center py-8">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-8 h-8 text-green-500" />
-              </div>
-            </div>
-            <h3 className="text-xl font-semibold mb-3">🎉 Chapter Complete!</h3>
-            <p className="text-secondary-foreground mb-6 max-w-2xl mx-auto">
-              Congratulations! The development environment is now set up. Next, we'll move to the most exciting part—writing your first confidential smart contract.
-            </p>
-            <Button size="lg" className="gradient-bg">
-              Continue to Next Step: Writing Confidential Contracts
-            </Button>
-          </CardContent>
-        </Card>
+            {/* Completion Section */}
+            <Card className="feature-card bg-gradient-to-r from-green-500/10 to-primary/10 border-green-500/20 mt-8">
+              <CardContent className="text-center py-8">
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-green-500" />
+                  </div>
+                </div>
+                <h3 className="text-xl font-semibold mb-3">🎉 Chapter Complete!</h3>
+                <p className="text-secondary-foreground mb-6 max-w-2xl mx-auto">
+                  Congratulations! The development environment is now set up. Next, we'll move to the most exciting part—writing your first confidential smart contract.
+                </p>
+                <Button size="lg" className="gradient-bg">
+                  Continue to Next Step: Writing Confidential Contracts
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
       </div>
     </div>
   );
