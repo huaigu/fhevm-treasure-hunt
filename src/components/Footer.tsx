@@ -74,15 +74,12 @@ const Footer = () => {
             <h3 className="font-medium text-foreground">About Project</h3>
             <div className="space-y-3 text-sm text-secondary-foreground">
               <p>
-                This project is designed for Zama Bounty Season 10 to promote the use of FHEVM technology in real-world applications.
-              </p>
-              <p>
                 By building an engaging treasure hunt game, developers can intuitively understand how fully homomorphic encryption protects privacy on blockchain.
               </p>
               <div className="flex items-center space-x-1 text-xs text-muted-foreground pt-2">
                 <span>Made with</span>
                 <Heart className="w-3 h-3 text-accent" />
-                <span>for the crypto community</span>
+                <span>for the ZAMA community</span>
               </div>
             </div>
           </div>
