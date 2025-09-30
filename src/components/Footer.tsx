@@ -1,4 +1,4 @@
-import { Github, ExternalLink, Heart } from "lucide-react";
+import { Github, ExternalLink, Heart, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -17,13 +17,23 @@ const Footer = () => {
               An interactive FHEVM tutorial helping Web3 developers master fully homomorphic encryption and build truly privacy-preserving DApps.
             </p>
             <div className="flex items-center space-x-4">
-              <a 
-                href="https://github.com/huaigu/fhevm-treasure-hunt" 
+              <a
+                href="https://github.com/huaigu/fhevm-treasure-hunt"
                 className="text-secondary-foreground hover:text-primary transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="GitHub"
               >
                 <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="https://x.com/coder_chao"
+                className="text-secondary-foreground hover:text-primary transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Twitter"
+              >
+                <Twitter className="w-5 h-5" />
               </a>
             </div>
           </div>
